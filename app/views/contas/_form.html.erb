@@ -1,0 +1,27 @@
+<%= form_with(model: conta) do |form| %>
+  <% if conta.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(conta.errors.count, "error") %> prohibited this conta from being saved:</h2>
+
+      <ul>
+        <% conta.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :descricao, style: "display: block" %>
+    <%= form.text_field :descricao %>
+  </div>
+
+  <div>
+    <%= form.label :valor_inicial, style: "display: block" %>
+    <%= form.text_field :valor_inicial %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

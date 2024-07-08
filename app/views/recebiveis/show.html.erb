@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @recebivel %>
+
+<div>
+  <%= link_to "Edit this recebivel", edit_recebivel_path(@recebivel) %> |
+  <%= link_to "Back to recebiveis", recebiveis_path %>
+
+  <%= button_to "Destroy this recebivel", @recebivel, method: :delete %>
+</div>

@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pessoa: one
+  vencimento: 2024-07-05
+  valor: 9.99
+  data_pagamento: 2024-07-05
+  status: 1
+  valor_pago: 9.99
+
+two:
+  pessoa: two
+  vencimento: 2024-07-05
+  valor: 9.99
+  data_pagamento: 2024-07-05
+  status: 1
+  valor_pago: 9.99

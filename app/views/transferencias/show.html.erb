@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @transferencia %>
+
+<div>
+  <%= link_to "Edit this transferencia", edit_transferencia_path(@transferencia) %> |
+  <%= link_to "Back to transferencias", transferencias_path %>
+
+  <%= button_to "Destroy this transferencia", @transferencia, method: :delete %>
+</div>
