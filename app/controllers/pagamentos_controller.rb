@@ -16,6 +16,9 @@ class PagamentosController < ApplicationController
     if params[:vencimento].present?
       @pagamentos = @pagamentos.where(vencimento: params[:vencimento])
     end
+    @pagamentosf = @pagamentos
+    @pagamentos = @pagamentos.page(params[:page]).per(10)
+
   end
 
   # GET /pagamentos/1 or /pagamentos/1.json

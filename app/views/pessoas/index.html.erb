@@ -44,8 +44,9 @@
   </table>
 
   <!-- Links de Paginação -->
-  <%= paginate @pessoas %>
-    
+  <div class="fixed-bottom d-flex justify-content-center align-items-center">
+     <%= paginate @pessoas %>
+  </div>  
   <% else %>
     <h5> Nenhuma Pessoa encontrada </h5>
   <% end %> 
@@ -53,36 +54,36 @@
 
 <!-- Modal -->
 <div class="modal fade" id="newPessoaModal" tabindex="-1" aria-labelledby="newPessoaModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-light" id="newPessoaModalLabel">Inserir Nova Pessoa</h5>
+        <h5 class="modal-title" id="newPessoaModalLabel">Inserir Nova Pessoa</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <%= form_with model: Pessoa.new, url: pessoas_path, local: true do |form| %>
           <div class="mb-3">
-            <%= form.label :nome, class: "form-label text-light" %>
+            <%= form.label :nome, class: "form-label " %>
             <%= form.text_field :nome, class: "form-control" %>
           </div>
           <div class="mb-3">
-            <%= form.label :endereco, class: "form-label text-light" %>
+            <%= form.label :endereco, class: "form-label" %>
             <%= form.text_field :endereco, class: "form-control" %>
           </div>
           <div class="mb-3">
-            <%= form.label :bairro, class: "form-label text-light" %>
+            <%= form.label :bairro, class: "form-label"  %>
             <%= form.text_field :bairro, class: "form-control" %>
           </div>
           <div class="mb-3">
-            <%= form.label :cidade, class: "form-label text-light" %>
+            <%= form.label :cidade, class: "form-label " %>
             <%= form.text_field :cidade, class: "form-control" %>
           </div>
           <div class="mb-3">
-            <%= form.label :email, class: "form-label text-light" %>
+            <%= form.label :email, class: "form-label" %>
             <%= form.email_field :email, class: "form-control" %>
           </div>
           <div class="mb-3">
-            <%= form.label :telefone, class: "form-label text-light" %>
+            <%= form.label :telefone, class: "form-label" %>
             <%= form.text_field :telefone, class: "form-control" %>
           </div>
           <div class="modal-footer">

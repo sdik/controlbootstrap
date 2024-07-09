@@ -71,3 +71,4 @@ gem "cssbundling-rails", "~> 1.4"
 gem 'webpacker', '~> 5.0'
 gem "jsbundling-rails", "~> 1.3"
 gem 'font-awesome-sass', '~> 6.0'
+gem 'faker'

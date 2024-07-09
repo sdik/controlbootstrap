@@ -103,8 +103,9 @@ GEM
       reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.13.0)
-    ffi (1.17.0-x64-mingw32)
-    ffi (1.17.0-x86_64-linux-gnu)
+    faker (3.4.1)
+      i18n (>= 1.8.11, < 2)
+    ffi (1.17.0)
     font-awesome-sass (6.5.2)
       sassc (~> 2.0)
     globalid (1.2.1)
@@ -284,6 +285,7 @@ DEPENDENCIES
   capybara
   cssbundling-rails (~> 1.4)
   debug
+  faker
   font-awesome-sass (~> 6.0)
   importmap-rails
   jbuilder
@@ -304,4 +306,4 @@ RUBY VERSION
    ruby 3.0.3p157
 
 BUNDLED WITH
-   2.5.14
+   2.4.21

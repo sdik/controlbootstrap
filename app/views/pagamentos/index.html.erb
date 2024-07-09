@@ -1,12 +1,19 @@
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Pagamentos (<%= Pagamento.count == @pagamentosf.count ? Pagamento.count : "Filtrado: #{@pagamentosf.count} de #{Pagamento.count}" %>)</h1>
+    <%= link_to new_pagamento_path, class: "d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" do %>
+          <i class="fas fa-download fa-sm text-white-50"></i>
+          Adicionar
+    <% end %>
+</div>
+
 <p style="color: green"><%= notice %></p>
 
 <div class="container">
-  <h2 class="my-4">Pagamentos (<%=Pagamento.all.size%>)</h2>
-  
+ 
   <%= form_with url: pagamentos_path, method: :get, local: true, class: "row g-3" do %>
     <div class="col-md-3">
       <%= label_tag :pessoa_id, "Pessoa", class: "form-label" %>
-      <%= select_tag :pessoa_id, options_from_collection_for_select(Pessoa.all, :id, :nome, params[:pessoa_id]), include_blank: true, class: "form-select" %>
+      <%= select_tag :pessoa_id, options_from_collection_for_select(Pessoa.all.order(:nome), :id, :nome, params[:pessoa_id]), include_blank: true, class: "form-select" %>
     </div>
     <div class="col-md-3">
       <%= label_tag :status, "Status", class: "form-label" %>
@@ -20,37 +27,47 @@
       <%= submit_tag "Filtrar", class: "btn btn-primary" %>
     </div>
   <% end %>
-  
-  <table class="table table-striped mt-4">
+ 
+ <div class="table-responsive-sm">
+  <table class="table table-sm table-hover table-striped mt-2">
     <thead>
       <tr>
         <th>ID</th>
         <th>Pessoa</th>
         <th>Vencimento</th>
         <th>Valor</th>
-        <th>Data Pagamento</th>
+        <th>Pagamento</th>
         <th>Status</th>
-        <th>Valor Pago</th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <% @pagamentos.each do |pagamento| %>
-        <tr>
+       <% vencido_e_nao_pago = pagamento.vencimento < Date.today && pagamento.status != 1 %>
+        <tr <%= "class=table-danger" if vencido_e_nao_pago %>>
           <td><%= pagamento.id %></td>
           <td><%= pagamento.pessoa.nome %></td>
           <td><%= pagamento.vencimento %></td>
           <td><%= pagamento.valor %></td>
           <td><%= pagamento.data_pagamento %></td>
-          <td><%= pagamento.status == 1 ? 'Pago' : 'Pendente' %></td>
-          <td><%= pagamento.valor_pago %></td>
+          <td><%= pagamento.status == 1 ? '<i class="fas fa-check fa-sm text-success"></i>'.html_safe : '<i class="fas fa-times fa-sm text-danger"></i>'.html_safe %></td>
           <td>
-            <%= link_to 'Mostrar', pagamento, class: "btn btn-info btn-sm" %>
-            <%= link_to 'Editar', edit_pagamento_path(pagamento), class: "btn btn-warning btn-sm" %>
-            <%= link_to 'Deletar', pagamento, method: :delete, data: { confirm: 'Tem certeza?' }, class: "btn btn-danger btn-sm" %>
+          <%= link_to pagamento, class: "btn btn-info btn-sm" do %>
+          <i class="fas fa-eye fa-sm text-black"></i>         
+          <% end %>
+          <%= link_to edit_pagamento_path(pagamento), class: "btn btn-warning btn-sm" do %>
+          <i class="fas fa-pencil fa-sm text-black"></i>
+           <% end %>
+          <%= link_to pagamento, method: :delete, data: { confirm: 'Tem certeza?' }, class: "btn btn-danger btn-sm" do %>
+              <i class="fas fa-trash fa-sm text-black"></i>
+          <% end %>
           </td>
         </tr>
-      <% end %>
-    </tbody>
+        <% end %>
+      </tbody>
   </table>
+</div>
+      <div class="fixed-bottom d-flex justify-content-center align-items-center">
+         <%= paginate @pagamentos %>
+      </div> 
 </div>

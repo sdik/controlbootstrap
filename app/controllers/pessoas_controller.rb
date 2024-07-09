@@ -13,7 +13,7 @@ class PessoasController < ApplicationController
     @pessoas = @pessoas.order(params[:sort] => params[:direction]) if params[:sort].present? && params[:direction].present?
 
       # Paginação
-    @pessoas = @pessoas.page(params[:page]).per(2)
+    @pessoas = @pessoas.page(params[:page]).per(10)
   end
 
   # GET /pessoas/1 or /pessoas/1.json
