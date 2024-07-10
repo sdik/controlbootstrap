@@ -3,7 +3,9 @@ class PagamentosController < ApplicationController
 
   # GET /pagamentos or /pagamentos.json
   def index
-    @pagamentos = Pagamento.all
+    column = params[:column]
+    direction = params[:direction]
+    @pagamentos = Pagamento.joins(:pessoa)
 
     if params[:pessoa_id].present?
       @pagamentos = @pagamentos.where(pessoa_id: params[:pessoa_id])
@@ -12,9 +14,18 @@ class PagamentosController < ApplicationController
     if params[:status].present?
       @pagamentos = @pagamentos.where(status: params[:status])
     end
+    if params[:vencimento_inicio].present? && params[:vencimento_fim].present?
+      @pagamentos = @pagamentos.where(vencimento: params[:vencimento_inicio]..params[:vencimento_fim])
+    end
 
-    if params[:vencimento].present?
-      @pagamentos = @pagamentos.where(vencimento: params[:vencimento])
+
+
+    if column.present? && direction.present?
+      if column == 'pessoa_name'
+        @pagamentos = @pagamentos.order("pessoas.nome #{direction}")
+      else
+        @pagamentos = @pagamentos.order("#{column} #{direction}")
+      end
     end
     @pagamentosf = @pagamentos
     @pagamentos = @pagamentos.page(params[:page]).per(10)

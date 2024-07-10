@@ -1,7 +1,8 @@
 module ApplicationHelper
-    def sortable(column, title = nil)
-        title ||= column.titleize
-        direction = (column == params[:sort] && params[:direction] == "asc") ? "desc" : "asc"
-        link_to title, sort: column, direction: direction, nome: params[:nome], cidade: params[:cidade]
+    def format_date(date, format = :default)
+        I18n.l(date, format: format) if date.present?
+    end
+    def format_curr(value)
+        number_to_currency(value, unit: "R$", separator: ",", delimiter: ".", format: "%u %n", precision: 2)
     end
 end
