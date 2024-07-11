@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_06_004030) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_11_141456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_004030) do
     t.decimal "valor_pago"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "conta_id"
+    t.index ["conta_id"], name: "index_pagamentos_on_conta_id"
     t.index ["pessoa_id"], name: "index_pagamentos_on_pessoa_id"
   end
 
@@ -53,6 +55,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_004030) do
     t.decimal "valor_recebido"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "conta_id"
+    t.index ["conta_id"], name: "index_recebiveis_on_conta_id"
     t.index ["pessoa_id"], name: "index_recebiveis_on_pessoa_id"
   end
 
@@ -67,6 +71,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_004030) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "pagamentos", "contas"
   add_foreign_key "pagamentos", "pessoas"
+  add_foreign_key "recebiveis", "contas"
   add_foreign_key "recebiveis", "pessoas"
 end

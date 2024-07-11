@@ -1,32 +1,32 @@
 <div id="<%= dom_id pagamento %>">
   <p>
     <strong>Pessoa:</strong>
-    <%= pagamento.pessoa_id %>
+    <%= pagamento.pessoa.nome %>
   </p>
 
   <p>
     <strong>Vencimento:</strong>
-    <%= pagamento.vencimento %>
+    <%= format_date(pagamento.vencimento) %>
   </p>
 
   <p>
     <strong>Valor:</strong>
-    <%= pagamento.valor %>
+    <%= format_curr(pagamento.valor) %>
   </p>
 
   <p>
     <strong>Data pagamento:</strong>
-    <%= pagamento.data_pagamento %>
+    <%= format_date(pagamento.data_pagamento) %>
   </p>
 
   <p>
     <strong>Status:</strong>
-    <%= pagamento.status %>
+    <%= pagamento.status == 0 ? "Pago" : "Pendente" %>
   </p>
 
   <p>
     <strong>Valor pago:</strong>
-    <%= pagamento.valor_pago %>
+    <%= format_curr(pagamento.valor_pago) %>
   </p>
 
 </div>

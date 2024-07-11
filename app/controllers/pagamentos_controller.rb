@@ -14,11 +14,21 @@ class PagamentosController < ApplicationController
     if params[:status].present?
       @pagamentos = @pagamentos.where(status: params[:status])
     end
+
+    if params[:entrada_inicio].present? && params[:entrada_fim].present?
+      entrada_fim = params[:entrada_fim]
+      # Converta a string para um objeto Date
+      entrada_fim = Date.parse(entrada_fim) if entrada_fim.present?
+      # Converta para o final do dia
+      entrada_fim = entrada_fim.end_of_day if entrada_fim      
+      @pagamentos = @pagamentos.where(created_at: params[:entrada_inicio]..entrada_fim)
+    end
     if params[:vencimento_inicio].present? && params[:vencimento_fim].present?
       @pagamentos = @pagamentos.where(vencimento: params[:vencimento_inicio]..params[:vencimento_fim])
     end
-
-
+    if params[:pagamento_inicio].present? && params[:pagamento_fim].present?
+      @pagamentos = @pagamentos.where(data_pagamento: params[:pagamento_inicio]..params[:pagamento_fim])
+    end
 
     if column.present? && direction.present?
       if column == 'pessoa_name'

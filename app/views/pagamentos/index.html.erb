@@ -2,7 +2,9 @@
     <h1 class="h3 mb-0 text-gray-800">Pagamentos </h1><p class="fst-italic"><%= Pagamento.count == @pagamentosf.count ? "Registro(s): #{Pagamento.count}" : "Filtrado: #{@pagamentosf.count} de #{Pagamento.count}" %></p>
  </div>
  <div class="d-sm-flex align-items-center justify-content-between mb-6">
-     <%= link_to new_pagamento_path, class: "d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" do %>
+   <!-- Button to trigger modal -->
+   
+    <%= link_to new_pagamento_path, class: "d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" do %>
           <i class="fas fa-download fa-sm text-white-50"></i>
           Adicionar
     <% end %>
@@ -100,13 +102,13 @@
   <table class="table table-sm table-hover table-striped mt-2">
     <thead>
       <tr>
-        <th><%= sort_link(column: "created_at", label: "Entrada") %></th>
+        <th class="text-center"><%= sort_link(column: "created_at", label: "Entrada") %></th>
         <th><%= sort_link(column: "pessoa_name", label: "Pessoa") %> </th>
-        <th><%= sort_link(column: "vencimento", label: "Vencimento") %></th>
-        <th><%= sort_link(column: "valor", label: "Valor") %></th>
-        <th><%= sort_link(column: "data_pagamento", label: "Pago") %></th>
-        <th><%= sort_link(column: "status", label: "Status") %></th>
-        <th>Ações</th>
+        <th class="text-center"><%= sort_link(column: "vencimento", label: "Vencimento") %></th>
+        <th class="text-center"><%= sort_link(column: "valor", label: "Valor") %></th>
+        <th class="text-center"><%= sort_link(column: "data_pagamento", label: "Pago") %></th>
+        <th class="text-center"><%= sort_link(column: "status", label: "Status") %></th>
+        <th class="text-center">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -114,11 +116,11 @@
       <% @pagamentos.each do |pagamento| %>
        <% vencido_e_nao_pago = pagamento.vencimento < Date.today && pagamento.status != 1 %>
         <tr <%= "class=table-danger" if vencido_e_nao_pago %>>
-          <td><%= format_date(pagamento.created_at, :default ) %></td>
+          <td class="text-center"><%= format_date(pagamento.created_at, :default ) %></td>
           <td><%= pagamento.pessoa.nome %></td>
-          <td><%= format_date(pagamento.vencimento) %></td>
+          <td class="text-center"><%= format_date(pagamento.vencimento) %></td>
           <td class="text-end"><%= format_curr(pagamento.valor) %></td>
-          <td><%= format_date(pagamento.data_pagamento) %></td>
+          <td class="text-center"><%= format_date(pagamento.data_pagamento) %></td>
           <td class="text-center"><%= pagamento.status == 1 ? '<i class="fas fa-check fa-sm text-success"></i>'.html_safe : '<i class="fas fa-times fa-sm text-danger"></i>'.html_safe %></td>
           <td class="text-end">
           <%= link_to pagamento, class: "btn btn-info btn-sm" do %>

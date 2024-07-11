@@ -16,6 +16,8 @@ module Controle
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w(assets tasks))
 
+    I18n.config.available_locales = :pt
+    I18n.default_locale = :pt
     config.i18n.default_locale = :'pt-BR'
     config.i18n.available_locales = [:en, :'pt-BR']
     # Configuration for the application, engines, and railties goes here.
