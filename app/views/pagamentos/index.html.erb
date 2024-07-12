@@ -1,15 +1,15 @@
  <div class="d-sm-flex align-items-center justify-content-between mb-6">
-    <h1 class="h3 mb-0 text-gray-800">Pagamentos </h1><p class="fst-italic"><%= Pagamento.count == @pagamentosf.count ? "Registro(s): #{Pagamento.count}" : "Filtrado: #{@pagamentosf.count} de #{Pagamento.count}" %></p>
+    <h1 class="h3 mb-0 text-gray-800">Pagamentos </h1><p class="fst-italic d-print-none"><%= Pagamento.count == @pagamentosf.count ? "Registro(s): #{Pagamento.count}" : "Filtrado: #{@pagamentosf.count} de #{Pagamento.count}" %></p>
  </div>
  <div class="d-sm-flex align-items-center justify-content-between mb-6">
    <!-- Button to trigger modal -->
    
-    <%= link_to new_pagamento_path, class: "d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" do %>
+    <%= link_to new_pagamento_path, class: "d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm d-print-none" do %>
           <i class="fas fa-download fa-sm text-white-50"></i>
           Adicionar
     <% end %>
  
-    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" data-bs-toggle="modal" data-bs-target="#filtroModal">
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm d-print-none" data-bs-toggle="modal" data-bs-target="#filtroModal">
       <i class="fas fa-filter fa-sm text-white-50"></i>
       Abrir Filtro
     </button>  
@@ -108,46 +108,49 @@
         <th class="text-center"><%= sort_link(column: "valor", label: "Valor") %></th>
         <th class="text-center"><%= sort_link(column: "data_pagamento", label: "Pago") %></th>
         <th class="text-center"><%= sort_link(column: "status", label: "Status") %></th>
-        <th class="text-center">Ações</th>
+        <th class="text-center d-print-none">Ações</th>
       </tr>
     </thead>
     <tbody>
       <% valor_por_pagina = 0 %>
       <% @pagamentos.each do |pagamento| %>
+       <% if pagamento.vencimento.present? %> 
        <% vencido_e_nao_pago = pagamento.vencimento < Date.today && pagamento.status != 1 %>
-        <tr <%= "class=table-danger" if vencido_e_nao_pago %>>
+       <tr <%= "class=table-danger" if vencido_e_nao_pago %>>
+       <% else %>
+       <tr>
+       <% end %>
           <td class="text-center"><%= format_date(pagamento.created_at, :default ) %></td>
           <td><%= pagamento.pessoa.nome %></td>
           <td class="text-center"><%= format_date(pagamento.vencimento) %></td>
           <td class="text-end"><%= format_curr(pagamento.valor) %></td>
           <td class="text-center"><%= format_date(pagamento.data_pagamento) %></td>
           <td class="text-center"><%= pagamento.status == 1 ? '<i class="fas fa-check fa-sm text-success"></i>'.html_safe : '<i class="fas fa-times fa-sm text-danger"></i>'.html_safe %></td>
-          <td class="text-end">
-          <%= link_to pagamento, class: "btn btn-info btn-sm" do %>
+          <td class="text-end d-print-none">
+          <%= link_to pagamento, class: "btn btn-info btn-sm d-print-none" do %>
           <i class="fas fa-eye fa-sm text-black"></i>         
           <% end %>
-          <%= link_to edit_pagamento_path(pagamento), class: "btn btn-warning btn-sm" do %>
+          <%= link_to edit_pagamento_path(pagamento), class: "btn btn-warning btn-sm d-print-none" do %>
           <i class="fas fa-pencil fa-sm text-black"></i>
            <% end %>
-           <% valor_por_pagina = valor_por_pagina + pagamento.valor %>
-          <%= link_to pagamento, method: :delete, data: { confirm: 'Tem certeza?' }, class: "btn btn-danger btn-sm" do %>
-              <i class="fas fa-trash fa-sm text-black"></i>
-          <% end %>
           </td>
         </tr>
         <% end %>
       </tbody>
-  <tfoot>
-    <tr class="text-end">
-      <td>Sub total:</td>
-      <td><%= format_curr(valor_por_pagina) %></td>
-      <td>Total</td>
-      <td><%= format_curr(@pagamentosf.sum(:valor)) %></td>
-    </tr>
-  </tfoot>
+ <td>
+
+<div class= "d-print-none">
+  <%= items_per_page_form(request.query_parameters) %>
+</div>
+
+ </td>
+      <td ></td>
+      <td class="text-center">Total</td>
+      <td class="text-end fw-bold"><%= format_curr(@pagamentosf.sum(:valor)) %></td>
+  
 </table>
 </div>
-      <div class="fixed-bottom d-flex justify-content-center align-items-center">
+      <div class="fixed-bottom d-flex justify-content-center align-items-center d-print-none">
          <%= paginate @pagamentos %>
       </div> 
 </div>

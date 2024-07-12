@@ -10,7 +10,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <link rel="stylesheet" href="/assets/sb-admin-2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-   <!-- Adicione Cleave.js -->
+    <!-- Adicione Cleave.js -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 
     <script src="/assets/jquery.min.js"></script>
@@ -25,9 +25,47 @@
     <script src="/assets/chart-area-demo.js"></script>
     <script src="/assets/chart-pie-demo.js"></script>
     <%= javascript_importmap_tags %>
+<style>
+    /* Estilos adicionais (opcional) */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-print {
+      display: none; /* Inicialmente escondida na tela */
+    }
+
+    .company-info {
+      font-size: 16px;
+    }
+
+    /* Estilos para a impressão */
+    @media print {
+      .logo-print {
+        display: block; /* Mostra apenas na impressão */
+      }
+
+      .company-info {
+        font-size: 12px; /* Reduz tamanho da fonte na impressão */
+      }
+    }
+  </style>
+
+
  </head>  
   
 <body id="page-top">
+<div class="header logo-print">
+  <img src="\assets\logo.png" alt="Logomarca da Empresa" class="logo">
+</div>
+
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -39,6 +77,9 @@
 
             <!-- Main Content -->
             <div id="content">
+
+            <!-- Cabeçalho para impressão -->
+
 
             <%# render "base/toolbar" %>   
                 <!-- Begin Page Content -->
@@ -53,7 +94,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white d-print-none">
                 <div class="container my-auto">
                     <div class="copyright text-right my-auto">
                         <span>Copyright &copy; Jonas Netto 2014</span>

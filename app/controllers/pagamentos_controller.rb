@@ -6,6 +6,8 @@ class PagamentosController < ApplicationController
     column = params[:column]
     direction = params[:direction]
     @pagamentos = Pagamento.joins(:pessoa)
+    
+    @items_per_page = params[:items_per_page] || 10
 
     if params[:pessoa_id].present?
       @pagamentos = @pagamentos.where(pessoa_id: params[:pessoa_id])
@@ -38,7 +40,7 @@ class PagamentosController < ApplicationController
       end
     end
     @pagamentosf = @pagamentos
-    @pagamentos = @pagamentos.page(params[:page]).per(10)
+    @pagamentos = @pagamentos.page(params[:page]).per(@items_per_page)
 
   end
 
@@ -61,7 +63,7 @@ class PagamentosController < ApplicationController
 
     respond_to do |format|
       if @pagamento.save
-        format.html { redirect_to pagamento_url(@pagamento), notice: "Pagamento was successfully created." }
+        format.html { redirect_to pagamento_url(@pagamento), notice: "Pagamento Criado com Sucesso!." }
         format.json { render :show, status: :created, location: @pagamento }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -74,7 +76,7 @@ class PagamentosController < ApplicationController
   def update
     respond_to do |format|
       if @pagamento.update(pagamento_params)
-        format.html { redirect_to pagamento_url(@pagamento), notice: "Pagamento was successfully updated." }
+        format.html { redirect_to pagamento_url(@pagamento), notice: "Pagamento Atualizado com Sucesso!" }
         format.json { render :show, status: :ok, location: @pagamento }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -88,7 +90,7 @@ class PagamentosController < ApplicationController
     @pagamento.destroy!
 
     respond_to do |format|
-      format.html { redirect_to pagamentos_url, notice: "Pagamento was successfully destroyed." }
+      format.html { redirect_to pagamentos_url, notice: "Pagamento DELETADO com sucesso." }
       format.json { head :no_content }
     end
   end

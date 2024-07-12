@@ -5,6 +5,33 @@
 <div>
   <%= link_to "Editar", edit_pagamento_path(@pagamento), class: "btn-sm btn-primary" %> |
   <%= link_to "Voltar", pagamentos_path, class: "btn-sm btn-primary"%>
+<!-- Button trigger modal -->
+<button type="button" class="btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Apagar
+</button>
 
-  <%= button_to "Destroy this pagamento", @pagamento, method: :delete, , class: "btn-sm b4- " %>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Deseja realmente apagar o registo? </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <ul class="list-group">
+        <li class="list-group-item">Data: <%= format_date(@pagamento.created_at) %></li>
+        <li class="list-group-item">Pessoa: <%= Pessoa.find(@pagamento.pessoa_id).nome %></li>
+        <li class="list-group-item">Valor: <%= @pagamento.valor %></li>
+        <li class="list-group-item">Vencimento <%= format_date(@pagamento.vencimento) %></li>
+      </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+         <%= button_to "Delete", @pagamento, method: :delete, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
