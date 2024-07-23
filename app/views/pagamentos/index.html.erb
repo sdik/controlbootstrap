@@ -8,6 +8,15 @@
           <i class="fas fa-download fa-sm text-white-50"></i>
           Adicionar
     <% end %>
+
+    <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Filtros de Pagamento">
+      <%= link_to 'Todos', url_for(params.permit!.to_h.except(:filter)), class: "btn btn-outline-primary #{'active' unless params[:filter].present?}" %>
+      <%= link_to 'Pagos', url_for(params.permit!.to_h.merge(filter: 'pagos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagos'}" %>
+      <%= link_to 'A Pagar', url_for(params.permit!.to_h.merge(filter: 'a_pagar')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'a_pagar'}" %>
+      <%= link_to 'Vencidos', url_for(params.permit!.to_h.merge(filter: 'vencidos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'vencidos'}" %>
+      <%= link_to 'Hoje', url_for(params.permit!.to_h.merge(filter: 'pagar_hoje')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagar_hoje'}" %>
+    </div>
+
  
     <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm d-print-none" data-bs-toggle="modal" data-bs-target="#filtroModal">
       <i class="fas fa-filter fa-sm text-white-50"></i>
@@ -103,7 +112,7 @@
     <thead>
       <tr>
         <th class="text-center"><%= sort_link(column: "created_at", label: "Entrada") %></th>
-        <th><%= sort_link(column: "pessoa_name", label: "Pessoa") %> </th>
+        <th><%= sort_link(column: "pessoa_name", label: "Fornecedor") %> </th>
         <th class="text-center"><%= sort_link(column: "vencimento", label: "Vencimento") %></th>
         <th class="text-center"><%= sort_link(column: "valor", label: "Valor") %></th>
         <th class="text-center"><%= sort_link(column: "data_pagamento", label: "Pago") %></th>

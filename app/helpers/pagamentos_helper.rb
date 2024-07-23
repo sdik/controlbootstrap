@@ -24,5 +24,5 @@ module PagamentosHelper
           concat form.select :items_per_page, options_for_select([10, 20, 30, 50, 100, Pagamento.count], current_params[:items_per_page].to_i), {}, onchange: 'this.form.submit();'
         end
       end
-          
+      
 end

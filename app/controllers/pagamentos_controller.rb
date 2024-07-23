@@ -39,6 +39,20 @@ class PagamentosController < ApplicationController
         @pagamentos = @pagamentos.order("#{column} #{direction}")
       end
     end
+    
+    @pagamentos = case params[:filter]
+      when 'pagos'
+        @pagamentos.pagos
+      when 'a_pagar'
+        @pagamentos.a_pagar
+      when 'vencidos'
+        @pagamentos.vencidos
+      when 'pagar_hoje'
+        @pagamentos.pagar_hoje 
+      else
+        @pagamentos.all
+      end
+   
     @pagamentosf = @pagamentos
     @pagamentos = @pagamentos.page(params[:page]).per(@items_per_page)
 
