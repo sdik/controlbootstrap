@@ -3,8 +3,63 @@ class RecebiveisController < ApplicationController
 
   # GET /recebiveis or /recebiveis.json
   def index
-    @recebiveis = Recebivel.all
+        column = params[:column]
+        direction = params[:direction]
+        @recebiveis = Recebivel.joins(:pessoa)
+    
+        @items_per_page = params[:items_per_page] || 10
+    
+        if params[:pessoa_id].present?
+          @recebiveis = @recebiveis.where(pessoa_id: params[:pessoa_id])
+        end
+    
+        if params[:status].present?
+          @recebiveis = @recebiveis.where(status: params[:status])
+        end
+    
+        if params[:entrada_inicio].present? && params[:entrada_fim].present?
+          entrada_fim = params[:entrada_fim]
+          entrada_fim = Date.parse(entrada_fim) if entrada_fim.present?
+          entrada_fim = entrada_fim.end_of_day if entrada_fim
+          @recebiveis = @recebiveis.where(created_at: params[:entrada_inicio]..entrada_fim)
+        end
+    
+        if params[:vencimento_inicio].present? && params[:vencimento_fim].present?
+          @recebiveis = @recebiveis.where(vencimento: params[:vencimento_inicio]..params[:vencimento_fim])
+        end
+    
+        if params[:recebivel_inicio].present? && params[:recebivel_fim].present?
+          @recebiveis = @recebiveis.where(data_pagamento: params[:recebivel_inicio]..params[:recebivel_fim])
+        end
+    
+        if column.present? && direction.present?
+           if column == 'pessoa_name'
+              @recebiveis = @recebiveis.order("pessoas.nome #{direction}")
+           else
+              @recebiveis = @recebiveis.order("#{column} #{direction}")
+           end
+        end
+        
+
+        @recebiveis = case params[:filter]
+        when 'pagos'
+          @recebiveis.pagos
+        when 'a_pagar'
+          @recebiveis.a_pagar
+        when 'vencidos'
+          @recebiveis.vencidos
+        when 'pagar_hoje'
+          @recebiveis.pagar_hoje 
+        else
+          @recebiveis.all.order(id: :desc)
+        end
+
+
+        @recebiveisf = @recebiveis
+        @recebiveis = @recebiveis.page(params[:page]).per(@items_per_page)
   end
+
+  
 
   # GET /recebiveis/1 or /recebiveis/1.json
   def show
@@ -65,6 +120,6 @@ class RecebiveisController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recebivel_params
-      params.require(:recebivel).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_recebido)
+      params.require(:recebivel).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_recebido, :conta_id)
     end
 end

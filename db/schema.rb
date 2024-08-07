@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_141456) do
     t.decimal "valor_recebido"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "conta_id"
+    t.bigint "conta_id", null: true
     t.index ["conta_id"], name: "index_recebiveis_on_conta_id"
     t.index ["pessoa_id"], name: "index_recebiveis_on_pessoa_id"
   end

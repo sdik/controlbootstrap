@@ -3,7 +3,42 @@ class TransferenciasController < ApplicationController
 
   # GET /transferencias or /transferencias.json
   def index
+    column = params[:column]
+    direction = params[:direction]
     @transferencias = Transferencia.all
+
+    @items_per_page = params[:items_per_page] || 10
+
+    if params[:saida].present?
+      @transferencias = @transferencias.where(saida: params[:saida])
+    end
+
+    if params[:entrada].present?
+      @transferencias = @transferencias.where(entrada: params[:entrada])
+    end
+
+    if params[:data_inicio].present? && params[:data_fim].present?
+      data_fim = Date.parse(params[:data_fim]).end_of_day if params[:data_fim].present?
+      @transferencias = @transferencias.where(data: params[:data_inicio]..data_fim)
+    end
+
+    if column.present? && direction.present?
+      @transferencias = @transferencias.order("#{column} #{direction}")
+    end
+
+    @transferencias = case params[:filter]
+    when 'hoje'
+      @transferencias.hoje
+    when 'essa_semana'
+      @transferencias.essa_semana
+    when 'mes_atual'
+      @transferencias.mes_atual
+    else
+      @transferencias.all
+    end
+    
+    @transferenciasf = @transferencias
+    @transferencias = @transferencias.page(params[:page]).per(@items_per_page)
   end
 
   # GET /transferencias/1 or /transferencias/1.json

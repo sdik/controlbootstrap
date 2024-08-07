@@ -1,10 +1,69 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @conta %>
+<div class="container mt-5">
+  <h1>Extrato da Conta: <%= @conta.descricao %></h1>
+  <p>Saldo Atual: <h2 class="font-weight-bold"><%= number_to_currency(@conta.saldo) %></h2></p>
 
-<div>
-  <%= link_to "Edit this conta", edit_conta_path(@conta) %> |
-  <%= link_to "Back to contas", contas_path %>
-
-  <%= button_to "Destroy this conta", @conta, method: :delete %>
+  <h3>Extrato</h3>
+  <table class="table table-bordered table-hover mt-3">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Valor</th>
+        <th class="d-print-none">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transacoes.reverse.each do |transacao| %>
+        <% if transacao.is_a?(Recebivel) %>
+          <tr class="table-success">
+            <td><%= format_date(transacao.data_pagamento) %></td>
+            <td>Recebível </td>
+            <td>Entrada</td>
+            <td><%= number_to_currency(transacao.valor_recebido) %></td>
+            <td class="d-print-none"> <%= link_to recebivel_path(transacao.id), class: "btn btn-info btn-sm d-print-none" do %>
+             <i class="fas fa-eye fa-sm text-black"></i>         
+             <% end %>
+           </td>
+          </tr>
+        <% elsif transacao.is_a?(Pagamento) %>
+          <tr class="table-danger">
+            <td><%= format_date(transacao.data_pagamento) %></td>
+            <td>Pagamento</td>
+            <td>Saída</td>
+            <td><%= number_to_currency(transacao.valor) %></td>
+             <td class="d-print-none"> <%= link_to pagamento_path(transacao.id), class: "btn btn-info btn-sm d-print-none" do %>
+             <i class="fas fa-eye fa-sm text-black"></i>         
+             <% end %>
+           </td>
+          </tr>
+        <% elsif transacao.is_a?(Transferencia) && transacao.saida == @conta.id %>
+          <tr class="table-warning">
+            <td><%= format_date(transacao.data) %></td>
+            <td>Transferência para <%= Conta.find(transacao.entrada).descricao %></td>
+            <td>Saída</td>
+            <td><%= number_to_currency(transacao.valor_saida) %></td>
+             <td class="d-print-none"> <%= link_to transferencia_path(transacao.id), class: "btn btn-info btn-sm d-print-none" do %>
+             <i class="fas fa-eye fa-sm text-black"></i>         
+             <% end %>
+           </td>
+          </tr>
+        <% elsif transacao.is_a?(Transferencia) && transacao.entrada == @conta.id %>
+          <tr class="table-info">
+            <td><%= format_date(transacao.data) %></td>
+            <td>Transferência de <%= Conta.find(transacao.saida).descricao %></td>
+            <td>Entrada</td>
+            <td><%= number_to_currency(transacao.valor_saida) %></td>
+            <td class="d-print-none"> <%= link_to transferencia_path(transacao.id), class: "btn btn-info btn-sm d-print-none" do %>
+             <i class="fas fa-eye fa-sm text-black"></i>         
+             <% end %>
+           </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
 </div>

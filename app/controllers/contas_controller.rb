@@ -8,6 +8,19 @@ class ContasController < ApplicationController
 
   # GET /contas/1 or /contas/1.json
   def show
+    @conta = Conta.find(params[:id])
+    @recebiveis = @conta.recebiveis.where(status: true).order(data_pagamento: :desc)
+    @pagamentos = @conta.pagamentos.where(status: true).order(data_pagamento: :desc)
+    @transferencias_origem = @conta.transferencias_origem.order(data: :desc)
+    @transferencias_destino = @conta.transferencias_destino.order(data: :desc)
+
+    @transacoes = (@recebiveis + @pagamentos + @transferencias_origem + @transferencias_destino).sort_by do |transacao|
+      if transacao.is_a?(Recebivel) || transacao.is_a?(Pagamento)
+        transacao.data_pagamento || Time.at(0)
+      elsif transacao.is_a?(Transferencia)
+        transacao.data || Time.at(0)
+      end
+    end
   end
 
   # GET /contas/new

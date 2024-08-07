@@ -1,2 +1,32 @@
-<h1>Dashboad#index</h1>
-<p>Find me in app/views/dashboad/index.html.erb</p>
+<h1>Dashboard</h1>
+<div class="row">
+<div class="col">
+<div class="card">
+  <div class="card-header">
+  <div class = "row">
+  <div class = "col">
+    Pagamentos e Recebíveis no Ano <%= @selected_year %> 
+  </div>
+    <div class="col-md-auto">
+    <%= form_with url: root_path, method: :get, local: true do %>
+       <div class="input-group mb-1" style="width: auto;">
+       <label class="input-group-text" for="inputGroupSelect01">Ano</label>
+       <%= select_tag :year, options_for_select((2000..Date.current.year).to_a.reverse, @selected_year), class: 'form-select form-select-sm', style: 'width: auto;', onchange: 'this.form.submit();', id: 'inputGroupSelect01' %>
+      </div>
+    <% end %>
+   </div>
+  </div>
+  </div>
+  <div class="card-body">
+    <%= column_chart [
+      { name: "Pagos", data: @dados_mes_a_mes.transform_values { |v| v[:pagos] } },
+      { name: "Recebidos", data: @dados_mes_a_mes.transform_values { |v| v[:recebidos] } }
+    ], ytitle: "Valor (R$)", colors: ["#0a8ef3", "#f1ff33"] %>
+    </div>
+    <div class= "col">
+    </div>
+  </div>
+</div>
+<div class="col">
+</div>
+</div>

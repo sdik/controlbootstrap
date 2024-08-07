@@ -9,7 +9,7 @@
           Adicionar
     <% end %>
 
-    <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Filtros de Pagamento">
+    <div class="btn-group btn-group-sm mb-3 d-print-none" role="group" aria-label="Filtros de Pagamento">
       <%= link_to 'Todos', url_for(params.permit!.to_h.except(:filter)), class: "btn btn-outline-primary #{'active' unless params[:filter].present?}" %>
       <%= link_to 'Pagos', url_for(params.permit!.to_h.merge(filter: 'pagos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagos'}" %>
       <%= link_to 'A Pagar', url_for(params.permit!.to_h.merge(filter: 'a_pagar')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'a_pagar'}" %>

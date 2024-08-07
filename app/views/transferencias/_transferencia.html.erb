@@ -6,7 +6,7 @@
 
   <p>
     <strong>Saida:</strong>
-    <%= transferencia.saida %>
+    <%= Conta.find(transferencia.saida).descricao %>
   </p>
 
   <p>
@@ -16,12 +16,7 @@
 
   <p>
     <strong>Entrada:</strong>
-    <%= transferencia.entrada %>
-  </p>
-
-  <p>
-    <strong>Valor entrada:</strong>
-    <%= transferencia.valor_entrada %>
+    <%= Conta.find(transferencia.entrada).descricao %>
   </p>
 
   <p>

@@ -3,8 +3,34 @@
 <%= render @pessoa %>
 
 <div>
-  <%= link_to "Edit this pessoa", edit_pessoa_path(@pessoa) %> |
-  <%= link_to "Back to pessoas", pessoas_path %>
+  <%= link_to "Editar", edit_pessoa_path(@pessoa), class: "btn btn-sm btn-warning" %> 
+  <%= link_to "Voltar", pessoas_path, class: "btn btn-sm btn-secondary" %>
+  
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Apagar
+</button>
 
-  <%= button_to "Destroy this pessoa", @pessoa, method: :delete %>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Deseja realmente apagar o registo? </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <ul class="list-group">
+        <li class="list-group-item">Data: <%= format_date(@pessoa.created_at) %></li>
+        <li class="list-group-item">Pessoa: <%= @pessoa.nome %></li>
+        <li class="list-group-item">Cidade: <%= @pessoa.cidade %></li>
+       </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+         <%= button_to "Delete", @pessoa, method: :delete, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

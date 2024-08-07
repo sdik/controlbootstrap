@@ -3,10 +3,10 @@
 <%= render @pagamento %>
 
 <div>
-  <%= link_to "Editar", edit_pagamento_path(@pagamento), class: "btn-sm btn-primary" %> |
-  <%= link_to "Voltar", pagamentos_path, class: "btn-sm btn-primary"%>
+  <%= link_to "Editar", edit_pagamento_path(@pagamento), class: "btn btn-sm btn-primary" %>
+  <%= link_to "Voltar", pagamentos_path, class: "btn btn-sm btn-secondary"%>
 <!-- Button trigger modal -->
-<button type="button" class="btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
   Apagar
 </button>
 

@@ -1,14 +1,100 @@
-<p style="color: green"><%= notice %></p>
+<div class="d-sm-flex align-items-center justify-content-between mb-6">
+    <h1 class="h3 mb-0 text-gray-800">Transferência </h1><p class="fst-italic d-print-none"><%= Transferencia.count == @transferenciasf.count ? "Registro(s): #{Transferencia.count}" : "Filtrado: #{@transferenciasf.count} de #{Transferencia.count}" %></p>
+ </div>
+ <div class="d-sm-flex align-items-center justify-content-between mb-6">
+   <!-- Button to trigger modal -->
+   
+    <%= link_to new_transferencia_path, class: "d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm d-print-none" do %>
+          <i class="fas fa-download fa-sm text-white-50"></i>
+          Adicionar
+    <% end %>
 
-<h1>Transferencias</h1>
+    <div class="btn-group btn-group-sm mb-3 d-print-none" role="group" aria-label="Filtros de Pagamento">
+      <%= link_to 'Todos', url_for(params.permit!.to_h.except(:filter)), class: "btn btn-outline-primary #{'active' unless params[:filter].present?}" %>
+      <%= link_to 'Hoje', url_for(params.permit!.to_h.merge(filter: 'hoje')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'hoje'}" %>
+      <%= link_to 'Essa Semana', url_for(params.permit!.to_h.merge(filter: 'essa_semana')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'essa_semana'}" %>
+      <%= link_to 'Mes Atual', url_for(params.permit!.to_h.merge(filter: 'mes_atual')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'mes_atual'}" %>
+    </div>
 
-<div id="transferencias">
-  <% @transferencias.each do |transferencia| %>
-    <%= render transferencia %>
-    <p>
-      <%= link_to "Show this transferencia", transferencia %>
-    </p>
-  <% end %>
+ 
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm d-print-none" data-bs-toggle="modal" data-bs-target="#filterModal">
+      <i class="fas fa-filter fa-sm text-white-50"></i>
+      Abrir Filtro
+    </button>  
 </div>
 
-<%= link_to "New transferencia", new_transferencia_path %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_linkT(column: "data", label: "Data") %></th>
+      <th><%= sort_linkT(column: "saida", label: "Saque") %> <i class="fa fa-arrow-circle-up" aria-hidden="true"></i> </th>
+      <th><%= sort_linkT(column: "entrada", label: "Deposito") %> <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></th>
+      <th><%= sort_linkT(column: "valor_saida", label: "Valor") %></th>
+      <th class= "d-print-none">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transferencias.each do |transferencia| %>
+      <tr>
+        <td><%= format_date(transferencia.data) %></td>
+        <td><%= Conta.find(transferencia.saida).descricao if transferencia.saida.present? %></td>
+        <td><%= Conta.find(transferencia.entrada).descricao if transferencia.entrada.present? %></td>
+        <td><%= number_to_currency(transferencia.valor_saida) %></td>
+        <td class="text-end d-print-none">
+          <%= link_to transferencia, class: "btn btn-primary btn-sm d-print-none" do %>
+          <i class="fas fa-eye fa-sm text-black"></i>         
+          <% end %>
+          <%= link_to edit_transferencia_path(transferencia), class: "btn btn-warning btn-sm d-print-none" do %>
+          <i class="fas fa-pencil fa-sm text-black"></i>
+           <% end %>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <td></td>
+  <td>
+<div class= "d-print-none">
+  <%= items_per_page_formT(request.query_parameters) %>
+</div>
+ </td>
+      <td class="text-center">Total</td>
+      <td class="text-end fw-bold"><%= format_curr(@transferencias.sum(:valor_saida)) %></td>   
+</table>
+
+<%= paginate @transferencias %>
+
+<!-- Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filtros</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: transferencias_path, method: :get, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :Saque, 'Conta Origem' %>
+            <%= select_tag :saida, options_from_collection_for_select(Conta.all.order(:descricao), :id, :descricao, params[:saida]), include_blank: true, class: "form-select" %>
+            </div>
+          <div class="mb-3">
+            <%= f.label :Destino, 'Conta Destino' %>
+            <%= select_tag :entrada, options_from_collection_for_select(Conta.all.order(:descricao), :id, :descricao, params[:entrada]), include_blank: true, class: "form-select" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :data_inicio, 'Data a partir de' %>
+            <%= date_field_tag :data_inicio, params[:data_inicio], class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :data_fim, 'Data até' %>
+            <%= date_field_tag :data_fim, params[:data_fim], class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.submit 'Aplicar Filtros', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

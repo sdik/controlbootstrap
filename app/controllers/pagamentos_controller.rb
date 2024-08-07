@@ -50,7 +50,7 @@ class PagamentosController < ApplicationController
       when 'pagar_hoje'
         @pagamentos.pagar_hoje 
       else
-        @pagamentos.all
+        @pagamentos.all.order(id: :desc)
       end
    
     @pagamentosf = @pagamentos
@@ -60,6 +60,7 @@ class PagamentosController < ApplicationController
 
   # GET /pagamentos/1 or /pagamentos/1.json
   def show
+    
   end
 
   # GET /pagamentos/new
@@ -117,6 +118,6 @@ class PagamentosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def pagamento_params
-      params.require(:pagamento).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_pago)
+      params.require(:pagamento).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_pago, :conta_id)
     end
 end

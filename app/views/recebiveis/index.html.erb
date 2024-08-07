@@ -1,14 +1,160 @@
-<p style="color: green"><%= notice %></p>
+<div class="d-sm-flex align-items-center justify-content-between mb-6">
+    <h1 class="h3 mb-0 text-gray-800">Recebíveis </h1><p class="fst-italic d-print-none"><%= Recebivel.count == @recebiveisf.count ? "Registro(s): #{Recebivel.count}" : "Filtrado: #{@recebiveisf.count} de #{Recebivel.count}" %></p>
+ </div>
+ <div class="d-sm-flex align-items-center justify-content-between mb-6">
+   <!-- Button to trigger modal -->
+   
+    <%= link_to new_recebivel_path, class: "d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm d-print-none" do %>
+          <i class="fas fa-download fa-sm text-white-50"></i>
+          Adicionar
+    <% end %>
 
-<h1>Recebiveis</h1>
+    <div class="btn-group btn-group-sm mb-3 d-print-none" role="group" aria-label="Filtros de Pagamento">
+      <%= link_to 'Todos', url_for(params.permit!.to_h.except(:filter)), class: "btn btn-outline-primary #{'active' unless params[:filter].present?}" %>
+      <%= link_to 'Pagos', url_for(params.permit!.to_h.merge(filter: 'pagos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagos'}" %>
+      <%= link_to 'A Pagar', url_for(params.permit!.to_h.merge(filter: 'a_pagar')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'a_pagar'}" %>
+      <%= link_to 'Vencidos', url_for(params.permit!.to_h.merge(filter: 'vencidos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'vencidos'}" %>
+      <%= link_to 'Hoje', url_for(params.permit!.to_h.merge(filter: 'pagar_hoje')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagar_hoje'}" %>
+    </div>
 
-<div id="recebiveis">
-  <% @recebiveis.each do |recebivel| %>
-    <%= render recebivel %>
-    <p>
-      <%= link_to "Show this recebivel", recebivel %>
-    </p>
-  <% end %>
+ 
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm d-print-none" data-bs-toggle="modal" data-bs-target="#filtroModal">
+      <i class="fas fa-filter fa-sm text-white-50"></i>
+      Abrir Filtro
+    </button>  
+  
+ </div>
+
+
+<div class="table-responsive-sm">
+<table class="table table-sm table-hover table-striped mt-2">
+  <thead>
+    <tr>
+      <th><%= sort_link2(column: "created_at", label: "Entrada") %></th>
+      <th><%= sort_link2(column: "pessoa_name", label: "Cliente") %></th>
+      <th><%= sort_link2(column: "vencimento", label: "Vencimento") %></th>
+      <th><%= sort_link2(column: "valor", label: "Valor") %></th>
+      <th><%= sort_link2(column: "data_pagamento", label: "Pagamento") %></th>
+      <th><%= sort_link2(column: "status", label: "Status") %></th>
+      <th class= "d-print-none">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recebiveis.each do |recebivel| %>
+       <% if recebivel.vencimento.present? %> 
+       <% vencido_e_nao_pago = recebivel.vencimento < Date.today && recebivel.status != 1 %>
+       <tr <%= "class=table-danger" if vencido_e_nao_pago %>>
+       <% else %>
+       <tr>
+       <% end %>
+        <td><%= format_date(recebivel.created_at) %></td>
+        <td><%= recebivel.pessoa.nome %></td>
+        <td><%= format_date(recebivel.vencimento) %></td>
+        <td><%= number_to_currency(recebivel.valor) %></td>
+        <td><%= format_date(recebivel.data_pagamento) %></td>
+        <td class="text-center"><%= recebivel.status == 1 ? '<i class="fas fa-check fa-sm text-success"></i>'.html_safe : '<i class="fas fa-times fa-sm text-danger"></i>'.html_safe %></td>       
+        <td class="text-end d-print-none">
+          <%= link_to recebivel, class: "btn btn-primary btn-sm d-print-none" do %>
+          <i class="fas fa-eye fa-sm text-black"></i>         
+          <% end %>
+          <%= link_to edit_recebivel_path(recebivel), class: "btn btn-warning btn-sm d-print-none" do %>
+          <i class="fas fa-pencil fa-sm text-black"></i>
+           <% end %>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+ <td>
+<div class= "d-print-none">
+  <%= items_per_page_formR(request.query_parameters) %>
+</div>
+ </td>
+      <td ></td>
+      <td class="text-center">Total</td>
+      <td class="text-end fw-bold"><%= format_curr(@recebiveis.sum(:valor)) %></td>
+
+</table>
 </div>
 
-<%= link_to "New recebivel", new_recebivel_path %>
+   
+
+ </-- Modal -->  
+<div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filtroModalLabel">Filtrar Recebimentos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: recebiveis_path, method: :get, local: true, class: "row g-3" do %>
+          <div class="row">
+            <div class="col-md-5">
+              <%= label_tag :pessoa_id, "Pessoa", class: "form-label" %>
+              <%= select_tag :pessoa_id, options_from_collection_for_select(Pessoa.all.order(:nome), :id, :nome, params[:pessoa_id]), include_blank: true, class: "form-select" %>
+            </div>
+            <div class="col-md-3">
+              <%= label_tag :status, "Status", class: "form-label" %>
+              <%= select_tag :status, options_for_select([['Pago', 1], ['Pendente', 0]], params[:status]), include_blank: true, class: "form-select" %>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="card">
+                <h5 class="card-header">Período Entrada</h5>
+                <div class="card-body">
+                  <div class="col">
+                    <%= label_tag :entrada_inicio, "Início", class: "form-label" %>
+                    <%= date_field_tag :entrada_inicio, params[:entrada_inicio], class: "form-control" %>
+                    <%= label_tag :entrada_fim, "Final", class: "form-label mt-2" %>
+                    <%= date_field_tag :entrada_fim, params[:entrada_fim], class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <h5 class="card-header">Período Vencimento</h5>
+                <div class="card-body">
+                  <div class="col">
+                    <%= label_tag :vencimento_inicio, "Início", class: "form-label" %>
+                    <%= date_field_tag :vencimento_inicio, params[:vencimento_inicio], class: "form-control" %>
+                    <%= label_tag :vencimento_fim, "Final", class: "form-label mt-2" %>
+                    <%= date_field_tag :vencimento_fim, params[:vencimento_fim], class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card">
+                <h5 class="card-header">Período Recebimento</h5>
+                <div class="card-body">
+                  <div class="col">
+                    <%= label_tag :recebivel_inicio, "Início", class: "form-label" %>
+                    <%= date_field_tag :recebivel_inicio, params[:recebivel_inicio], class: "form-control" %>
+                    <%= label_tag :recebivel_fim, "Final", class: "form-label mt-2" %>
+                    <%= date_field_tag :recebivel_fim, params[:recebivel_fim], class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col d-flex justify-content-center">
+              <%= submit_tag "Filtrar", class: "btn btn-primary w-25" %>
+            </div>
+          </div>
+        
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fixed-bottom d-flex justify-content-center align-items-center d-print-none">
+   <%= paginate @recebiveis %>
+</div> 
