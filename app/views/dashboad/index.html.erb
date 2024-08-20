@@ -1,32 +1,97 @@
 <h1>Dashboard</h1>
+
 <div class="row">
-<div class="col">
-<div class="card">
-  <div class="card-header">
-  <div class = "row">
-  <div class = "col">
-    Pagamentos e Recebíveis no Ano <%= @selected_year %> 
-  </div>
-    <div class="col-md-auto">
-    <%= form_with url: root_path, method: :get, local: true do %>
-       <div class="input-group mb-1" style="width: auto;">
-       <label class="input-group-text" for="inputGroupSelect01">Ano</label>
-       <%= select_tag :year, options_for_select((2000..Date.current.year).to_a.reverse, @selected_year), class: 'form-select form-select-sm', style: 'width: auto;', onchange: 'this.form.submit();', id: 'inputGroupSelect01' %>
+  <!-- Card: Pagamentos e Recebíveis no Ano -->
+  <div class="col-8">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            Pagamentos e Recebíveis no Ano <%= @selected_year %> 
+          </div>
+          <div class="col-md-auto">
+            <%= form_with url: root_path, method: :get, local: true do %>
+              <div class="input-group mb-1" style="width: auto;">
+                <label class="input-group-text" for="inputGroupSelect01">Ano</label>
+                <%= select_tag :year, 
+                               options_for_select((2000..Date.current.year).to_a.reverse, @selected_year), 
+                               class: 'form-select form-select-sm', 
+                               style: 'width: auto;', 
+                               onchange: 'this.form.submit();', 
+                               id: 'inputGroupSelect01' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
-    <% end %>
-   </div>
-  </div>
-  </div>
-  <div class="card-body">
-    <%= column_chart [
-      { name: "Pagos", data: @dados_mes_a_mes.transform_values { |v| v[:pagos] } },
-      { name: "Recebidos", data: @dados_mes_a_mes.transform_values { |v| v[:recebidos] } }
-    ], ytitle: "Valor (R$)", colors: ["#0a8ef3", "#f1ff33"] %>
+      <div class="card-body">
+        <%= line_chart [
+              { name: "Pagos", data: @dados_mes_a_mes.transform_values { |v| v[:pagos] } },
+              { name: "Recebidos", data: @dados_mes_a_mes.transform_values { |v| v[:recebidos] } }
+            ], 
+            ytitle: "Valor (R$)", 
+            colors: ["#0a8ef3", "#f1ff33"] %>
+      </div>
     </div>
-    <div class= "col">
+  </div>
+
+  <!-- Card: Mês Atual vs Mês Anterior -->
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col">
+            Mês Atual vs Mês Anterior
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <%= pie_chart @dados_comparacao, 
+                          title: "Receitas", 
+                          donut: true, 
+                          height: "160px", 
+                          colors: ["#3498db", "#e74c3c"] %> 
+          </div>
+          <div class="col">
+            <%= pie_chart @dados_comparacao_pag, 
+                          title: "Despesas", 
+                          donut: true, 
+                          height: "160px", 
+                          colors: ["#00FF7F", "#FFD700"] %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div class="col">
-</div>
+
+
+<!-- Card: Comparação de Recebimentos: Mês Atual vs Média dos Últimos 6 Meses -->
+<div class="row mt-4">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        Comparação de Recebimentos: Mês Atual vs Média dos Últimos 6 Meses
+      </div>
+      <div class="card-body">
+        <% @dados_grafico = @dados_cidades.map do |cidade|
+            {
+              cidade: cidade.cidade,
+              numero_recebimentos_atual: cidade.numero_recebimentos_atual,
+              media_recebimentos: cidade.media_recebimentos
+            }
+          end 
+        %>
+        <%= column_chart [
+              { name: "Mês Atual", data: @dados_grafico.map { |d| [d[:cidade], d[:numero_recebimentos_atual]] } },
+              { name: "Média dos Últimos 6 Meses", data: @dados_grafico.map { |d| [d[:cidade], d[:media_recebimentos]] } }
+            ], 
+            title: "Top 10 Cidades por Número de Recebimentos",
+            height: "300px", 
+            colors: ["#3498db", "#FFD700"] %>
+      </div>
+    </div>
+  </div>
 </div>

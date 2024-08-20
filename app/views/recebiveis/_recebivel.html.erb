@@ -6,27 +6,27 @@
 
   <p>
     <strong>Vencimento:</strong>
-    <%= recebivel.vencimento %>
+    <%= format_date(recebivel.vencimento) %>
   </p>
 
   <p>
     <strong>Valor:</strong>
-    <%= recebivel.valor %>
+    <%= format_curr(recebivel.valor) %>
   </p>
 
   <p>
     <strong>Data pagamento:</strong>
-    <%= recebivel.data_pagamento %>
+    <%= format_date(recebivel.data_pagamento) %>
   </p>
 
   <p>
     <strong>Status:</strong>
-    <%= recebivel.status %>
+     <%= recebivel.status == 1 ? "Pago" : "Pendente" %>
   </p>
 
   <p>
     <strong>Valor recebido:</strong>
-    <%= recebivel.valor_recebido %>
+    <%= format_curr(recebivel.valor_recebido) if recebivel.valor_recebido.present? %>
   </p>
 
 </div>

@@ -3,6 +3,54 @@ class DashboadController < ApplicationController
     year = params[:year] || Time.current.year
     @dados_mes_a_mes = dados_pagamentos_e_recebiveis_por_mes(year)
     @selected_year = year
+
+    @top_cities = Recebivel.joins(:pessoa)
+                       .select('pessoas.cidade, COUNT(recebiveis.id) AS numero_recebimentos, SUM(recebiveis.valor) AS valor_total_recebido')
+                       .group('pessoas.cidade')
+                       .order('numero_recebimentos DESC')
+                       .limit(10)
+
+    mes_atual = Date.today.beginning_of_month
+    mes_anterior = mes_atual - 1.month
+
+    @recebimentos_comparacao = Recebivel.joins(:pessoa)
+                                        .where("recebiveis.data_pagamento >= ? AND recebiveis.data_pagamento < ?", mes_anterior, mes_atual.next_month)
+                                        .group("DATE_TRUNC('month', recebiveis.data_pagamento)")
+                                        .select("DATE_TRUNC('month', recebiveis.data_pagamento) as mes, SUM(recebiveis.valor_recebido) as numero_recebimentos")
+                                        .order("mes") 
+    
+    @dados_comparacao = {
+      "Mês Atual" => @recebimentos_comparacao.find { |r| r.mes.strftime("%B %Y") == mes_atual.strftime("%B %Y") }&.numero_recebimentos || 0,
+      "Mês Anterior" => @recebimentos_comparacao.find { |r| r.mes.strftime("%B %Y") == mes_anterior.strftime("%B %Y") }&.numero_recebimentos || 0
+    }
+
+    @pagamentos_comparacao = Pagamento.where("data_pagamento >= ?", mes_anterior)
+                                  .group("DATE_TRUNC('month', data_pagamento)")
+                                  .select("DATE_TRUNC('month', data_pagamento) as mes, SUM(valor_pago) as numero_pagamentos")
+                                  .order("mes")
+
+    @dados_comparacao_pag = {
+      "Mês Atual" => @pagamentos_comparacao.find { |p| p.mes.strftime("%B %Y") == mes_atual.strftime("%B %Y") }&.numero_pagamentos || 0,
+      "Mês Anterior" => @pagamentos_comparacao.find { |p| p.mes.strftime("%B %Y") == mes_anterior.strftime("%B %Y") }&.numero_pagamentos || 0
+    }                              
+
+    mes_atual = Date.today.beginning_of_month
+    mes_inicio = 6.months.ago.beginning_of_month
+    
+    # Criando nós de Arel para as condições de comparação
+    recebiveis_arel = Recebivel.arel_table
+    condicao_mes_atual = recebiveis_arel['data_pagamento'].gteq(mes_atual)
+    condicao_seis_meses = recebiveis_arel['data_pagamento'].gteq(mes_inicio).and(recebiveis_arel['data_pagamento'].lt(mes_atual))
+    
+    @dados_cidades = Recebivel.joins(:pessoa)
+                              .select(
+                                'pessoas.cidade',
+                                "SUM(CASE WHEN #{condicao_mes_atual.to_sql} THEN 1 ELSE 0 END) AS numero_recebimentos_atual",
+                                "SUM(CASE WHEN #{condicao_seis_meses.to_sql} THEN 1 ELSE 0 END) / 6.0 AS media_recebimentos"
+                              )
+                              .group('pessoas.cidade')
+                              .order('numero_recebimentos_atual DESC')
+                              .limit(10)
   end
 
   private

@@ -5,6 +5,7 @@ class TransferenciasController < ApplicationController
   def index
     column = params[:column]
     direction = params[:direction]
+ 
     @transferencias = Transferencia.all
 
     @items_per_page = params[:items_per_page] || 10
@@ -23,6 +24,7 @@ class TransferenciasController < ApplicationController
     end
 
     if column.present? && direction.present?
+
       @transferencias = @transferencias.order("#{column} #{direction}")
     end
 
@@ -36,7 +38,7 @@ class TransferenciasController < ApplicationController
     else
       @transferencias.all
     end
-    
+ 
     @transferenciasf = @transferencias
     @transferencias = @transferencias.page(params[:page]).per(@items_per_page)
   end

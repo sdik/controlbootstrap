@@ -3,8 +3,8 @@
 <%= render @transferencia %>
 
 <div>
-  <%= link_to "Edit this transferencia", edit_transferencia_path(@transferencia) %> |
-  <%= link_to "Back to transferencias", transferencias_path %>
+  <%= link_to "Editar", edit_transferencia_path(@transferencia) %> |
+  <%= link_to "Voltar ", transferencias_path %>
 
-  <%= button_to "Destroy this transferencia", @transferencia, method: :delete %>
+  <%= button_to "Apagar", @transferencia, method: :delete %>
 </div>

@@ -2,7 +2,11 @@
 
 <%= render @conta %>
 <div class="container mt-5">
-  <h1>Extrato da Conta: <%= @conta.descricao %></h1>
+  <h2>Extrato da Conta: <%= @conta.descricao %></h2>
+  <p>
+    <strong>Valor inicial:</strong>
+    <%= format_curr(@conta.valor_inicial) %>
+  </p>
   <p>Saldo Atual: <h2 class="font-weight-bold"><%= number_to_currency(@conta.saldo) %></h2></p>
 
   <h3>Extrato</h3>

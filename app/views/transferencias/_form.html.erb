@@ -1,7 +1,7 @@
 <%= form_with(model: transferencia) do |form| %>
   <% if transferencia.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(transferencia.errors.count, "error") %> prohibited this transferencia from being saved:</h2>
+      <h2><%= pluralize(transferencia.errors.count, "erros") %> proibiu que esta transferência fosse salva:</h2>
 
       <ul>
         <% transferencia.errors.each do |error| %>
@@ -11,32 +11,44 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="row g-3">
+  <div class="col-sm-3">
     <%= form.label :data, style: "display: block" %>
-    <%= form.date_field :data %>
+    <%= form.date_field :data, class: "form-control" %>
   </div>
-
-  <div>
-    <%= form.label :saida, style: "display: block" %>
-    <%= form.number_field :saida %>
   </div>
-
-  <div>
-    <%= form.label :valor_saida, style: "display: block" %>
-    <%= form.text_field :valor_saida %>
+<div class="row g-3">
+  <div class="col-sm-6">
+    <%= form.label :saida, "Saque:", style: "display: block" %>
+     <%= form.select :saida, 
+                options_from_collection_for_select(Conta.all.order(:descricao), :id, :descricao, @transferencia.saida), 
+                { include_blank: true }, 
+                { class: "form-select" } %>   
   </div>
-
-  <div>
-    <%= form.label :entrada, style: "display: block" %>
-    <%= form.number_field :entrada %>
+  <div class="col-sm-3">
+    <%= form.label :valor_saida, "Valor:", style: "display: block" %>
+    <%= form.text_field :valor_saida, class: "form-control", id: "valor_saida", type: "number", step: "0.01", min: "0.01" %>
+  </div>
+  </div>
+ 
+  <div class= "row">
+  <div class="col-sm-6">
+    <%= form.label :entrada,"Deposito:", style: "display: block" %>
+    <%= form.select :entrada, 
+        options_from_collection_for_select(Conta.all.order(:descricao), :id, :descricao, @transferencia.entrada), 
+        { include_blank: true }, 
+        { class: "form-select" } %>  
+  </div>
   </div>
 
   <div>
     <%= form.label :motivo, style: "display: block" %>
-    <%= form.text_field :motivo %>
+    <%= form.text_field :motivo, class: "form-control" %>
   </div>
+<br>
 
-  <div>
-    <%= form.submit %>
+  <div class="modal-footer">
+     <%= form.submit 'Salvar', class: "btn btn-primary" %>
+     <%= link_to "Cancelar", transferencias_path, class: "btn btn-secondary" %>
   </div>
 <% end %>

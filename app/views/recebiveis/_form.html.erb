@@ -1,7 +1,7 @@
         <%= form_with(model: recebivel, local: true) do |form| %>
 <% if recebivel.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(recebivel.errors.count, "error") %> prohibited this transferencia from being saved:</h2>
+      <h2><%= pluralize(recebivel.errors.count, "erros") %> proibiu que esta transferência fosse salva:</h2>
 
       <ul>
         <% recebivel.errors.each do |error| %>
