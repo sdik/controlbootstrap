@@ -1,91 +1,105 @@
  <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion d-print-none" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion d-print-none" id="accordionSidebar">
+<br>
+    <!-- Sidebar - Brand -->
+  <p class="sidebar-brand d-flex align-items-center justify-content-center d-print-none" href="index.html">
+                <img src="/assets/logo.png" class="img-fluid rounded">
+   </p>
 
-            <!-- Sidebar - Brand -->
-            <p></p>
-            <p>
-         
-            </p>
-            <p class="sidebar-brand d-flex align-items-center justify-content-center d-print-none" href="index.html">
-                <img src="\assets\logo.png" class="img-fluid rounded">
-                <!-- 
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Controle Financeiro</div>
-                -->
-            </p>
-           
+      <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <%= link_to root_path, class: 'nav-link d-flex align-items-center gap-2' do %>
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        <% end %>
+    </li>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <%=link_to root_path, class: 'nav-link d-flex align-items-center gap-2' do %>
-                <%= content_tag :i, '', class: 'fas fa-tachometer-alt' %>
-                         Dashboard
-                <% end %>
-            </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Cadastros
+    </div>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Cadatros
+    <!-- Nav Items -->
+    <li class="nav-item">
+        <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
+            <i class="fas fa-university"></i>
+            <span>Contas</span>
+        <% end %>             
+    </li>
+    <li class="nav-item">
+        <%= link_to pessoas_path, class: "nav-link d-flex align-items-center gap-2" do %>
+            <i class="fas fa-users"></i>
+            <span>Pessoas</span>
+        <% end %>             
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Movimentos
+    </div>
+
+    <!-- Nav Items -->
+    <li class="nav-item">
+        <%= link_to pagamentos_path, class: "nav-link d-flex align-items-center gap-2" do %>
+            <i class="fas fa-barcode"></i>
+            <span>Pagamentos</span>
+        <% end %>             
+    </li>
+    <li class="nav-item">
+        <%= link_to recebiveis_path, class: "nav-link d-flex align-items-center gap-2" do %>
+            <i class="fas fa-receipt"></i>
+            <span>Recebíveis</span>
+        <% end %>             
+    </li>
+    <li class="nav-item">
+        <%= link_to transferencias_path, class: "nav-link d-flex align-items-center gap-2" do %>
+            <i class="fa-solid fa-repeat"></i>
+            <span>Transferências</span>
+        <% end %>             
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- User Login Section -->
+    <div class="sidebar-heading">
+        Usuário
+    </div>
+    <li class="nav-item">
+        <% if user_signed_in? %>
+            <div class="nav-link d-flex align-items-center gap-2">
+                <i class="fas fa-user-circle"></i>
+                <span>Bem-vindo, <%= current_user.email %></span>
             </div>
+            <%= link_to 'Sair', destroy_user_session_path, data: { turbo_method: :delete }, class: 'btn btn-danger btn-block mt-2' %>
+        <% else %>
+            <%= link_to 'Logar', new_user_session_path, class: 'btn btn-primary btn-block mt-2' %>
+        <% end %>      
+    </li>
+   <!-- Dentro da sidebar -->
+<% if current_user&.admin? %>
+  <li class="nav-item">
+    <%= link_to new_user_registration_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fas fa-user-plus"></i>
+      <span>Cadastrar Usuário</span>
+    <% end %>
+  </li>
+<% end %>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                 <%= link_to contas_path, class: "nav-link" do %>
-                        <i class="fas fa fa-university"></i>
-                        <span>Contas</span>
-                 <% end %>             
-            </li>
-            <li class="nav-item">
-                 <%= link_to pessoas_path, class: "nav-link" do %>
-                        <i class="fas fa fa-users"></i>
-                        <span>Pessoas</span>
-                 <% end %>             
-            </li>
-            <div class="sidebar-heading">
-                Movimentos
-            </div>
-            <li class="nav-item">
-                 <%= link_to pagamentos_path, class: "nav-link" do %>
-                        <i class="fas fa fa-barcode"></i>
-                        <span>Pagamentos</span>
-                 <% end %>             
-            </li>
-            <li class="nav-item">
-                 <%= link_to recebiveis_path, class: "nav-link" do %>
-                        <i class="fas fa-solid fa-receipt"></i>
-                        <span>Recebíveis</span>
-                 <% end %>             
-            </li>
-            <li class="nav-item">
-                 <%= link_to transferencias_path, class: "nav-link" do %>
-                      <i class="fa-solid fa-repeat"></i>
-                        <span>Transferêcias</span>
-                 <% end %>             
-            </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
+</ul>
+<!-- End of Sidebar -->
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) 
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div> -->
-
-            <!-- Sidebar Message 
-            <div class="sidebar-card d-none d-lg-flex">
-                <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div> -->
-
-        </ul>
-        <!-- End of Sidebar -->
+ 
+ 

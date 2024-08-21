@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_11_141456) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_21_205620) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_141456) do
     t.decimal "valor_recebido"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "conta_id", null: true
+    t.bigint "conta_id"
     t.index ["conta_id"], name: "index_recebiveis_on_conta_id"
     t.index ["pessoa_id"], name: "index_recebiveis_on_pessoa_id"
   end
@@ -69,6 +69,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_141456) do
     t.string "motivo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "useres", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "role", default: 0
+    t.index ["email"], name: "index_useres_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_useres_on_reset_password_token", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "role"
+    t.boolean "password_set", default: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "pagamentos", "contas"

@@ -1,4 +1,5 @@
 class DashboadController < ApplicationController
+  before_action :authenticate_user!
   def index
     year = params[:year] || Time.current.year
     @dados_mes_a_mes = dados_pagamentos_e_recebiveis_por_mes(year)
