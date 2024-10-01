@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   #get 'dashboad/index'
   resources :transferencias
   resources :contas
-  resources :recebiveis
+  resources :recebiveis do
+    collection do
+      post :create_bulk
+    end
+  end
   resources :pagamentos
   resources :pessoas
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

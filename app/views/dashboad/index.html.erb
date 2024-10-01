@@ -1,6 +1,31 @@
 <h1>Dashboard</h1>
 
 <div class="row">
+  <% @contas.each do |data| %>
+    <div class="col-md-2 col-sm-4 mb-3"> <!-- Ajusta a largura dos cards e adiciona margens menores -->
+      <div class="card h-100 bg-info" style="font-size: 0.8rem;"> <!-- Fonte menor e altura total -->
+        <div class="card-body p-2"> <!-- Padding reduzido para um visual mais compacto -->
+          <h6 class="card-title mb-1" style="font-size: 0.85rem;"><%= truncate(data[:conta].descricao, length: 15) %></h6> <!-- Título menor -->
+          <div class="card-text mb-1">
+            <div style="font-size: 0.65rem;">Saldo:</div>
+            <strong><%= number_to_currency(data[:saldo_atual]) %></strong>
+            <% if data[:tendencia] == 1 %>
+              <i class="fas fa-arrow-up text-success"></i>
+            <% elsif data[:tendencia] == -1 %>
+              <i class="fas fa-arrow-down text-danger"></i>
+            <% else %>
+              <i class="fas fa-arrow-right text-muted"></i>
+            <% end %>
+             <div class="card-text mb-1 secundary" style="font-size: 0.65rem;">Mês/Anterior: <strong><%= number_to_currency(data[:saldo_mes_passado]) %> </strong></div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="row">
   <!-- Card: Pagamentos e Recebíveis no Ano -->
   <div class="col-8">
     <div class="card">
@@ -11,12 +36,12 @@
           </div>
           <div class="col-md-auto">
             <%= form_with url: root_path, method: :get, local: true do %>
-              <div class="input-group mb-1" style="width: auto;">
-                <label class="input-group-text" for="inputGroupSelect01">Ano</label>
+              <div class="input-group mb-1">
+                <label class="input-group-text" style="font-size: 0.80rem;" for="inputGroupSelect01">Ano</label>
                 <%= select_tag :year, 
                                options_for_select((2000..Date.current.year).to_a.reverse, @selected_year), 
                                class: 'form-select form-select-sm', 
-                               style: 'width: auto;', 
+                               style: 'width: auto; font-size: 0.80rem;', 
                                onchange: 'this.form.submit();', 
                                id: 'inputGroupSelect01' %>
               </div>

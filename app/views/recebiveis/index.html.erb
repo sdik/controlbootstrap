@@ -8,7 +8,12 @@
           <i class="fas fa-download fa-sm text-white-50"></i>
           Adicionar
     <% end %>
+      <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm d-print-none" data-bs-toggle="modal" data-bs-target="#newRecebiveisModal">
+      <i class="fa fa-cog fa-sm text-white-50"></i>
+      Gerar
+    </button> 
 
+   
     <div class="btn-group btn-group-sm mb-3 d-print-none" role="group" aria-label="Filtros de Pagamento">
       <%= link_to 'Todos', url_for(params.permit!.to_h.except(:filter)), class: "btn btn-outline-primary #{'active' unless params[:filter].present?}" %>
       <%= link_to 'Pagos', url_for(params.permit!.to_h.merge(filter: 'pagos')), class: "btn btn-outline-primary #{'active' if params[:filter] == 'pagos'}" %>
@@ -158,3 +163,45 @@
 <div class="fixed-bottom d-flex justify-content-center align-items-center d-print-none">
    <%= paginate @recebiveis %>
 </div> 
+
+<!-- Modal gerar parcelas -->
+<div class="modal fade" id="newRecebiveisModal" tabindex="-1" role="dialog" aria-labelledby="newRecebiveisModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newRecebiveisModalLabel">Criar Recebíveis Mensais</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: create_bulk_recebiveis_path, method: :post, local: true do |f| %>
+          <div class="form-group">
+            <%= f.label :data_inicial, 'Data Inicial' %>
+            <%= f.date_field :data_inicial, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :cliente, 'Cliente' %>
+            <%= f.collection_select :pessoa_id, Pessoa.all.order(nome: :asc), :id, :nome, { prompt: 'Selecione um cliente' }, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :valor, 'Valor' %>
+            <%= f.number_field :valor, step: 0.01, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :numero_pagamentos, 'Número de Pagamentos' %>
+            <%= f.number_field :numero_pagamentos, class: 'form-control' %>
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <%= f.submit 'Criar Recebíveis', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

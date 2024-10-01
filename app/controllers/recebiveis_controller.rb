@@ -59,7 +59,35 @@ class RecebiveisController < ApplicationController
         @recebiveis = @recebiveis.page(params[:page]).per(@items_per_page)
   end
 
-  
+  def create_bulk
+    numero_pagamentos = params[:numero_pagamentos].to_i
+    data_inicial = Date.parse(params[:data_inicial])
+    considerar_dias_uteis = params[:considerar_dias_uteis] == '1'
+    pessoa_id = params[:pessoa_id]
+    valor = params[:valor].to_f
+
+    ActiveRecord::Base.transaction do
+      numero_pagamentos.times do |i|
+        vencimento = data_inicial + i.months
+
+        if considerar_dias_uteis
+          # Se considerar dias úteis, ajustar a data de vencimento
+          vencimento = vencimento.business_day? ? vencimento : vencimento.next_business_day
+        end
+
+        Recebivel.create!(
+          pessoa_id: pessoa_id,
+          vencimento: vencimento,
+          valor: valor
+        )
+      end
+    end
+
+    redirect_to recebiveis_path, notice: 'Recebíveis criados com sucesso.'
+  rescue => e
+    flash.now[:alert] = "Erro ao criar recebíveis: #{e.message}"
+    render :index
+  end 
 
   # GET /recebiveis/1 or /recebiveis/1.json
   def show

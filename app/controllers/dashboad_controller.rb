@@ -1,6 +1,18 @@
 class DashboadController < ApplicationController
-  before_action :authenticate_user!
+ # before_action :authenticate_user!
   def index
+    @contas = Conta.all.map do |conta|
+      saldo_atual = conta.saldo
+      saldo_mes_passado = conta.saldo_em(Date.today.last_month)
+      tendencia = saldo_atual <=> saldo_mes_passado
+
+      {
+        conta: conta,
+        saldo_atual: saldo_atual,
+        saldo_mes_passado: saldo_mes_passado,
+        tendencia: tendencia
+      }
+    end
     year = params[:year] || Time.current.year
     @dados_mes_a_mes = dados_pagamentos_e_recebiveis_por_mes(year)
     @selected_year = year

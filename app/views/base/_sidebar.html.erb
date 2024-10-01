@@ -26,13 +26,16 @@
     </div>
 
     <!-- Nav Items -->
+
+     <% if current_user&.admin? %>
     <li class="nav-item">
-        <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
             <i class="fas fa-university"></i>
             <span>Contas</span>
-        <% end %>             
+      <% end %>
     </li>
-    <li class="nav-item">
+  <% end %>
+  <li class="nav-item">
         <%= link_to pessoas_path, class: "nav-link d-flex align-items-center gap-2" do %>
             <i class="fas fa-users"></i>
             <span>Pessoas</span>

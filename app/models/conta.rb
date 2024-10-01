@@ -11,4 +11,12 @@ class Conta < ApplicationRecord
         transferencias_origem.sum(:valor_saida) +
         transferencias_destino.sum(:valor_saida)
     end
+
+    def saldo_em(data)
+        valor_inicial.to_d +
+          recebiveis.where('data_pagamento <= ?', data).sum(:valor_recebido) -
+          pagamentos.where('data_pagamento <= ?', data).sum(:valor) -
+          transferencias_origem.where('data <= ?', data).sum(:valor_saida) +
+          transferencias_destino.where('data <= ?', data).sum(:valor_saida)
+      end
 end
