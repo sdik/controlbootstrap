@@ -21,6 +21,16 @@
     <%= form.text_field :valor_inicial %>
   </div>
 
+   <div class="form-group">
+    <%= form.label :cor_fundo, "Cor de Fundo" %>
+    <%= form.color_field :cor_fundo, class: 'form-control' %>
+  </div>
+  
+  <div class="form-group">
+    <%= form.label :cor_fonte, "Cor da Fonte" %>
+    <%= form.color_field :cor_fonte, class: 'form-control' %>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>

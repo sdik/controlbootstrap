@@ -1,6 +1,6 @@
 class ContasController < ApplicationController
   before_action :set_conta, only: %i[ show edit update destroy ]
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
   # GET /contas or /contas.json
   def index
     @contas = Conta.all
@@ -78,6 +78,6 @@ class ContasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def conta_params
-      params.require(:conta).permit(:descricao, :valor_inicial)
+      params.require(:conta).permit(:descricao, :valor_inicial, :cor_fundo, :cor_fonte)
     end
 end

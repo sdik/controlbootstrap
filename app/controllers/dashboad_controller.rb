@@ -5,12 +5,16 @@ class DashboadController < ApplicationController
       saldo_atual = conta.saldo
       saldo_mes_passado = conta.saldo_em(Date.today.last_month)
       tendencia = saldo_atual <=> saldo_mes_passado
+      cor_fundo = conta.cor_fundo
+      cor_fonte = conta.cor_fonte
 
       {
         conta: conta,
         saldo_atual: saldo_atual,
         saldo_mes_passado: saldo_mes_passado,
-        tendencia: tendencia
+        tendencia: tendencia,
+        cor_fundo: cor_fundo,
+        cor_fonte: cor_fonte
       }
     end
     year = params[:year] || Time.current.year
