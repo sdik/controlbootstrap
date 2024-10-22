@@ -6,14 +6,20 @@
   <div class="row">
     <% @contas.each do |conta| %>
       <div class="col-md-4 mb-3">
-        <div class="card">
+        <div class="card shadow-sm" style="background-color: #f8f9fa;">
           <div class="card-body">
-            <h5 class="card-title"><%= conta.descricao %></h5>
-            <p class="card-text">Valor Inicial: <%= number_to_currency(conta.valor_inicial) %></p>
-             <p class="card-text">Saldo: <h4 class="my-1 text-info"><%= number_to_currency(conta.saldo) %></h4> </p>
+            <h5 class="card-title text-primary font-weight-bold"><%= conta.descricao %></h5>
+            <p class="card-text mb-2">
+              <strong>Valor Inicial:</strong> <%= number_to_currency(conta.valor_inicial) %>
+            </p>
+            <p class="card-text mb-1">
+              <strong>Saldo Atual:</strong> 
+              <h4 class="my-1 text-info"><%= number_to_currency(conta.saldo) %></h4> 
+            </p>
           </div>
-          <div class="card-footer">
-            <%= link_to 'Ver Detalhes', conta_path(conta), class: 'btn btn-primary' %>
+          <div class="card-footer d-flex justify-content-between bg-white border-top-0">
+            <%= link_to 'Ver Detalhes', conta_path(conta), class: 'btn btn-outline-primary btn-sm' %>
+            <%= link_to 'Editar', edit_conta_path(conta), class: 'btn btn-outline-secondary btn-sm' %>
           </div>
         </div>
       </div>

@@ -1,8 +1,7 @@
-<%= form_with(model: conta) do |form| %>
+<%= form_with(model: conta, local: true, class: "mt-4") do |form| %>
   <% if conta.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(conta.errors.count, "error") %> prohibited this conta from being saved:</h2>
-
+    <div class="alert alert-danger">
+      <h4><%= pluralize(conta.errors.count, "erro") %> impediram o salvamento desta conta:</h4>
       <ul>
         <% conta.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,27 +10,30 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :descricao, style: "display: block" %>
-    <%= form.text_field :descricao %>
-  </div>
-
-  <div>
-    <%= form.label :valor_inicial, style: "display: block" %>
-    <%= form.text_field :valor_inicial %>
-  </div>
-
-   <div class="form-group">
-    <%= form.label :cor_fundo, "Cor de Fundo" %>
-    <%= form.color_field :cor_fundo, class: 'form-control' %>
-  </div>
-  
   <div class="form-group">
-    <%= form.label :cor_fonte, "Cor da Fonte" %>
-    <%= form.color_field :cor_fonte, class: 'form-control' %>
+    <%= form.label :descricao, class: "form-label" %>
+    <%= form.text_field :descricao, class: "form-control", placeholder: "Digite a descrição da conta" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.label :valor_inicial, class: "form-label" %>
+    <%= form.text_field :valor_inicial, class: "form-control col-md-3", placeholder: "Digite o valor inicial" %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= form.label :cor_fundo, "Cor de Fundo", class: "form-label" %>
+      <%= form.color_field :cor_fundo, class: 'form-control' %>
+    </div>
+    
+    <div class="form-group col-md-6">
+      <%= form.label :cor_fonte, "Cor da Fonte", class: "form-label" %>
+      <%= form.color_field :cor_fonte, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group mt-3">
+    <%= form.submit "Salvar Conta", class: "btn btn-primary" %>
   </div>
 <% end %>
+

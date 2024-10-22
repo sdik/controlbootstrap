@@ -148,6 +148,6 @@ class RecebiveisController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recebivel_params
-      params.require(:recebivel).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_recebido, :conta_id)
+      params.require(:recebivel).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_recebido, :conta_id, :categoria, :descricao)
     end
 end

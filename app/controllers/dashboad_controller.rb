@@ -1,4 +1,5 @@
 class DashboadController < ApplicationController
+  include ActionView::Helpers::NumberHelper
  # before_action :authenticate_user!
   def index
     @contas = Conta.all.map do |conta|
@@ -17,6 +18,29 @@ class DashboadController < ApplicationController
         cor_fonte: cor_fonte
       }
     end
+
+
+     # Exemplo de cálculo para valores previstos e recebidos no mês atual
+     @previsto_mes_atual = Recebivel.where('vencimento >= ? AND vencimento <= ?', Date.today.beginning_of_month, Date.today.end_of_month).sum(:valor)
+     @recebido_mes_atual = Recebivel.where('data_pagamento >= ? AND data_pagamento <= ?', Date.today.beginning_of_month, Date.today.end_of_month).sum(:valor_recebido)
+ 
+     # Dados formatados para os gráficos
+     @dados_previsto_recebido = {
+      "Previsto: #{number_to_currency(@previsto_mes_atual)}" => @previsto_mes_atual,
+      "Recebido: #{number_to_currency(@recebido_mes_atual)}" => @recebido_mes_atual
+      } 
+  #fim 
+
+    @receitas_por_mes = Recebivel.where('data_pagamento >= ?', 6.months.ago)
+                                 .group_by_month(:data_pagamento, last: 6, format: "%B %Y")
+                                 .sum(:valor_recebido)
+
+    @despesas_por_mes = Pagamento.where('created_at >= ?', 6.months.ago)
+                                 .group_by_month(:created_at, last: 6, format: "%B %Y")
+                                 .sum(:valor)
+
+
+
     year = params[:year] || Time.current.year
     @dados_mes_a_mes = dados_pagamentos_e_recebiveis_por_mes(year)
     @selected_year = year

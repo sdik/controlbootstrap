@@ -118,6 +118,6 @@ class PagamentosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def pagamento_params
-      params.require(:pagamento).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_pago, :conta_id)
+      params.require(:pagamento).permit(:pessoa_id, :vencimento, :valor, :data_pagamento, :status, :valor_pago, :conta_id, :categoria, :descricao)
     end
 end
