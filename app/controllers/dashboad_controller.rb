@@ -1,6 +1,7 @@
 class DashboadController < ApplicationController
   include ActionView::Helpers::NumberHelper
- # before_action :authenticate_user!
+  before_action :authenticate_user!
+ # before_action :authorize_admin
   def index
     @contas = Conta.all.map do |conta|
       saldo_atual = conta.saldo

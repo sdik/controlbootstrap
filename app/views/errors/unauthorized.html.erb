@@ -1,0 +1,12 @@
+<!-- app/views/errors/unauthorized.html.erb -->
+<div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 80vh;">
+  <div class="card text-center shadow-sm p-4" style="max-width: 600px; border: 2px solid #dc3545;">
+    <div class="card-body">
+      <h1 class="text-danger mb-4">Acesso não Autorizado</h1>
+      <p class="lead">Desculpe, você não tem permissão para acessar esta página.</p>
+      <div class="mt-4">
+        <%= link_to 'Voltar para a página inicial', root_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

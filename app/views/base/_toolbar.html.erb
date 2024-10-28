@@ -10,21 +10,30 @@
     <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user-circle fa-sm fa-fw mr-2 text-gray-600"></i>
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= current_user.email %></span>
-          </a>
+          <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <i class="fas fa-user-circle fa-sm fa-fw mr-2 text-white"></i>
+            <span class="mr-2 d-none d-lg-inline text-white small"><%= current_user.email %></span>
+          </button>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
           <%= link_to edit_user_registration_path, class: 'dropdown-item' do %>
                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
               Perfil
         <% end %>
-            <div class="dropdown-divider"></div>
-          <%= link_to destroy_user_session_path, method: :delete, class: 'dropdown-item' do %>
+             <div class="dropdown-divider"></div>
+          <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: 'dropdown-item' do %>
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Sair
             <% end %>
+          <% if current_user&.admin? %>
+           <div class="dropdown-divider"></div>
+           Usuários
+           <div class="dropdown-divider"></div>
+            <%= link_to new_user_registration_path, class: 'dropdown-item' do %>
+               <i class="fas fa-user-plus mr-2 text-gray-400"></i>
+               Adicionar
+            <% end %>
+          <% end %>
           </div>
         </li>
       <% else %>

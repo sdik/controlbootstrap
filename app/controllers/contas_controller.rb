@@ -1,6 +1,6 @@
 class ContasController < ApplicationController
   before_action :set_conta, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!
+  before_action :authorize_admin
   # GET /contas or /contas.json
   def index
     @contas = Conta.all

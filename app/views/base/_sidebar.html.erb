@@ -26,15 +26,13 @@
     </div>
 
     <!-- Nav Items -->
-
-     <% if current_user&.admin? %>
+ 
     <li class="nav-item">
       <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
             <i class="fas fa-university"></i>
             <span>Contas</span>
       <% end %>
     </li>
-  <% end %>
   <li class="nav-item">
         <%= link_to pessoas_path, class: "nav-link d-flex align-items-center gap-2" do %>
             <i class="fas fa-users"></i>
@@ -73,7 +71,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- User Login Section -->
+    <!-- User Login Section 
     <div class="sidebar-heading">
         Usuário
     </div>
@@ -88,7 +86,7 @@
             <%= link_to 'Logar', new_user_session_path, class: 'btn btn-primary btn-block mt-2' %>
         <% end %>      
     </li>
-   <!-- Dentro da sidebar -->
+   Dentro da sidebar 
 <% if current_user&.admin? %>
   <li class="nav-item">
     <%= link_to new_user_registration_path, class: "nav-link d-flex align-items-center gap-2" do %>
@@ -96,7 +94,7 @@
       <span>Cadastrar Usuário</span>
     <% end %>
   </li>
-<% end %>
+<% end %> -->
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -1,6 +1,6 @@
 class TransferenciasController < ApplicationController
   before_action :set_transferencia, only: %i[ show edit update destroy ]
-
+  before_action :authorize_admin
   # GET /transferencias or /transferencias.json
   def index
     column = params[:column]

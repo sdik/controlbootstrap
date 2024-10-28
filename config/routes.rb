@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       passwords: 'users/passwords',
       registrations: 'users/registrations'
   }
+
+  get '/unauthorized', to: 'errors#unauthorized', as: :unauthorized
   #devise_for :users
   #get 'dashboad/index'
   resources :transferencias
