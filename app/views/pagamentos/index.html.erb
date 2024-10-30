@@ -43,6 +43,10 @@
               <%= label_tag :status, "Status", class: "form-label" %>
               <%= select_tag :status, options_for_select([['Pago', 1], ['Pendente', 0]], params[:status]), include_blank: true, class: "form-select" %>
             </div>
+              <div class="col-md-3">
+              <%= label_tag :categoria, "Categória", class: "form-label" %>
+              <%= text_field_tag :categoria, params[:categoria], class: "form-control" %>
+            </div>
           </div>
 
           <div class="row mt-3">
@@ -105,14 +109,15 @@
 <p style="color: green"><%= notice %></p>
 
 <div class="container">
-
   
  <div class="table-responsive-sm">
-  <table class="table table-sm table-hover table-striped mt-2">
+  <table class="table table-sm table-hover table-striped mt-2 text-muted">
     <thead>
       <tr>
         <th class="text-center"><%= sort_link(column: "created_at", label: "Entrada") %></th>
         <th><%= sort_link(column: "pessoa_name", label: "Fornecedor") %> </th>
+        <th> <%= sort_link(column: "categoria", label: "Categória") %></th>
+        <th> <%= sort_link(column: "descricao", label: "Descrição") %></th>
         <th class="text-center"><%= sort_link(column: "vencimento", label: "Vencimento") %></th>
         <th class="text-center"><%= sort_link(column: "valor", label: "Valor") %></th>
         <th class="text-center"><%= sort_link(column: "data_pagamento", label: "Pago") %></th>
@@ -131,6 +136,8 @@
        <% end %>
           <td class="text-center"><%= format_date(pagamento.created_at, :default ) %></td>
           <td><%= pagamento.pessoa.nome %></td>
+          <td><%= pagamento.categoria %></td>          
+          <td class="small text-truncate" style="max-width: 20px;"> <%=pagamento.descricao %></td>         
           <td class="text-center"><%= format_date(pagamento.vencimento) %></td>
           <td class="text-end"><%= format_curr(pagamento.valor) %></td>
           <td class="text-center"><%= format_date(pagamento.data_pagamento) %></td>
@@ -163,3 +170,12 @@
          <%= paginate @pagamentos %>
       </div> 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+</script>

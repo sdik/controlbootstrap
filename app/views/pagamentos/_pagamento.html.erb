@@ -5,6 +5,17 @@
   </p>
 
   <p>
+    <strong>Categória:</strong>
+    <%= pagamento.categoria %>
+  </p>
+
+  <p>
+    <strong>descricao:</strong>
+    <%= pagamento.descricao %>
+  </p>
+
+
+  <p>
     <strong>Vencimento:</strong>
     <%= format_date(pagamento.vencimento) %>
   </p>
@@ -19,6 +30,7 @@
     <%= format_date(pagamento.data_pagamento) %>
   </p>
 
+  
   <p>
     <strong>Status:</strong>
     <%= pagamento.status == 1 ? "Pago" : "Pendente" %>

@@ -16,6 +16,10 @@ class RecebiveisController < ApplicationController
         if params[:status].present?
           @recebiveis = @recebiveis.where(status: params[:status])
         end
+        
+        if params[:categoria].present?
+          @recebiveis = @recebiveis.where(categoria: params[:categoria])
+        end
     
         if params[:entrada_inicio].present? && params[:entrada_fim].present?
           entrada_fim = params[:entrada_fim]

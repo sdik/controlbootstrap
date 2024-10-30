@@ -37,6 +37,8 @@
     <tr>
       <th><%= sort_link2(column: "created_at", label: "Entrada") %></th>
       <th><%= sort_link2(column: "pessoa_name", label: "Cliente") %></th>
+      <th><%= sort_link2(column: "categoria", label: "Categoria") %></th>
+      <th><%= sort_link2(column: "descricao", label: "Descrição") %></th>
       <th><%= sort_link2(column: "vencimento", label: "Vencimento") %></th>
       <th><%= sort_link2(column: "valor", label: "Valor") %></th>
       <th><%= sort_link2(column: "data_pagamento", label: "Pagamento") %></th>
@@ -54,6 +56,8 @@
        <% end %>
         <td><%= format_date(recebivel.created_at) %></td>
         <td><%= recebivel.pessoa.nome %></td>
+        <td><%= recebivel.categoria %></td>          
+        <td class="small text-truncate" style="max-width: 20px;"> <%=recebivel.descricao %></td> 
         <td><%= format_date(recebivel.vencimento) %></td>
         <td><%= number_to_currency(recebivel.valor) %></td>
         <td><%= format_date(recebivel.data_pagamento) %></td>
@@ -101,6 +105,10 @@
             <div class="col-md-3">
               <%= label_tag :status, "Status", class: "form-label" %>
               <%= select_tag :status, options_for_select([['Pago', 1], ['Pendente', 0]], params[:status]), include_blank: true, class: "form-select" %>
+            </div>
+              <div class="col-md-3">
+              <%= label_tag :categoria, "Categória", class: "form-label" %>
+              <%= text_field_tag :categoria, params[:categoria], class: "form-control" %>
             </div>
           </div>
 
