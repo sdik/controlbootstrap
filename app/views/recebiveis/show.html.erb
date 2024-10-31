@@ -23,6 +23,8 @@
       <ul class="list-group">
         <li class="list-group-item">Data: <%= format_date(@recebivel.created_at) %></li>
         <li class="list-group-item">Pessoa: <%= Pessoa.find(@recebivel.pessoa_id).nome %></li>
+        <li class="list-group-item">Categória: <%= @recebivel.categoria %></li>
+        <li class="list-group-item">Descrição: <%= @recebivel.descricao %></li> 
         <li class="list-group-item">Valor: <%= @recebivel.valor %></li>
         <li class="list-group-item">Vencimento <%= format_date(@recebivel.vencimento) %></li>
       </ul>

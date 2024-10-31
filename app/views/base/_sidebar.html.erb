@@ -1,106 +1,72 @@
  <!-- Sidebar -->
 <ul class="navbar-nav navbar-black sidebar sidebar-dark accordion d-print-none" id="accordionSidebar">
-<br>
-    <!-- Sidebar - Brand -->
-  <p class="sidebar-brand d-flex align-items-center justify-content-center d-print-none" href="#">
-                <img src="/assets/logo.png" class="img-fluid rounded">
-   </p>
+  <br>
+  <!-- Sidebar - Brand -->
+  <p class="sidebar-brand d-flex flex-column align-items-center justify-content-center d-print-none mb-2">
+    <img src="/assets/logo.png" class="img-fluid rounded" style="max-width: 150px; height: auto;">
+  </p>
 
-      <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <%= link_to root_path, class: 'nav-link d-flex align-items-center gap-2' do %>
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Início</span>
-        <% end %>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Cadastros
-    </div>
-
-    <!-- Nav Items -->
- 
-    <li class="nav-item">
-      <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
-            <i class="fas fa-university navbar-black"></i>
-            <span>Contas</span>
-      <% end %>
-    </li>
-  <li class="nav-item">
-        <%= link_to pessoas_path, class: "nav-link d-flex align-items-center gap-2" do %>
-            <i class="fas fa-users"></i>
-            <span>Pessoas</span>
-        <% end %>             
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Movimentos
-    </div>
-
-    <!-- Nav Items -->
-    <li class="nav-item">
-        <%= link_to pagamentos_path, class: "nav-link d-flex align-items-center gap-2" do %>
-            <i class="fas fa-barcode"></i>
-            <span>Pagamentos</span>
-        <% end %>             
-    </li>
-    <li class="nav-item">
-        <%= link_to recebiveis_path, class: "nav-link d-flex align-items-center gap-2" do %>
-            <i class="fas fa-receipt"></i>
-            <span>Recebíveis</span>
-        <% end %>             
-    </li>
-    <li class="nav-item">
-        <%= link_to transferencias_path, class: "nav-link d-flex align-items-center gap-2" do %>
-            <i class="fa-solid fa-repeat"></i>
-            <span>Transferências</span>
-        <% end %>             
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- User Login Section 
-    <div class="sidebar-heading">
-        Usuário
-    </div>
-    <li class="nav-item">
-        <% if user_signed_in? %>
-            <div class="nav-link d-flex align-items-center gap-2">
-                <i class="fas fa-user-circle"></i>
-                <span>Bem-vindo, <%= current_user.email %></span>
-            </div>
-            <%= link_to 'Sair', destroy_user_session_path, data: { turbo_method: :delete }, class: 'btn btn-danger btn-block mt-2' %>
-        <% else %>
-            <%= link_to 'Logar', new_user_session_path, class: 'btn btn-primary btn-block mt-2' %>
-        <% end %>      
-    </li>
-   Dentro da sidebar 
-<% if current_user&.admin? %>
-  <li class="nav-item">
-    <%= link_to new_user_registration_path, class: "nav-link d-flex align-items-center gap-2" do %>
-      <i class="fas fa-user-plus"></i>
-      <span>Cadastrar Usuário</span>
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item active">
+    <%= link_to root_path, class: 'nav-link d-flex align-items-center gap-2' do %>
+      <i class="fas fa-tachometer-alt"></i>
+      <span>Início</span>
     <% end %>
   </li>
-<% end %> -->
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+  <!-- Divider -->
+  <hr class="sidebar-divider">
 
+  <!-- Heading -->
+  <div class="sidebar-heading text-uppercase small">
+    Cadastros
+  </div>
+
+  <!-- Nav Items -->
+  <li class="nav-item">
+    <%= link_to contas_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fas fa-university navbar-black"></i>
+      <span>Contas</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to pessoas_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fas fa-users"></i>
+      <span>Pessoas</span>
+    <% end %>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading text-uppercase small">
+    Movimentos
+  </div>
+
+  <!-- Nav Items -->
+  <li class="nav-item">
+    <%= link_to pagamentos_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fas fa-barcode"></i>
+      <span>Pagamentos</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to recebiveis_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fas fa-receipt"></i>
+      <span>Recebíveis</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to transferencias_path, class: "nav-link d-flex align-items-center gap-2" do %>
+      <i class="fa-solid fa-repeat"></i>
+      <span>Transferências</span>
+    <% end %>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
 </ul>
-<!-- End of Sidebar -->
-
- 
- 

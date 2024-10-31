@@ -57,7 +57,7 @@
         <td><%= format_date(recebivel.created_at) %></td>
         <td><%= recebivel.pessoa.nome %></td>
         <td><%= recebivel.categoria %></td>          
-        <td class="small text-truncate" style="max-width: 20px;"> <%=recebivel.descricao %></td> 
+        <td class="small text-truncate" style="max-width: 200px;"> <%=recebivel.descricao %></td> 
         <td><%= format_date(recebivel.vencimento) %></td>
         <td><%= number_to_currency(recebivel.valor) %></td>
         <td><%= format_date(recebivel.data_pagamento) %></td>
@@ -78,7 +78,9 @@
   <%= items_per_page_formR(request.query_parameters) %>
 </div>
  </td>
+     <td ></td>
       <td ></td>
+      <td ></td>      
       <td class="text-center">Total</td>
       <td class="text-end fw-bold"><%= format_curr(@recebiveis.sum(:valor)) %></td>
 

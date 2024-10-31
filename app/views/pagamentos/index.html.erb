@@ -137,7 +137,7 @@
           <td class="text-center"><%= format_date(pagamento.created_at, :default ) %></td>
           <td><%= pagamento.pessoa.nome %></td>
           <td><%= pagamento.categoria %></td>          
-          <td class="small text-truncate" style="max-width: 20px;"> <%=pagamento.descricao %></td>         
+          <td class="small text-truncate" style="max-width: 250px;"> <%=pagamento.descricao %></td>         
           <td class="text-center"><%= format_date(pagamento.vencimento) %></td>
           <td class="text-end"><%= format_curr(pagamento.valor) %></td>
           <td class="text-center"><%= format_date(pagamento.data_pagamento) %></td>
@@ -160,6 +160,8 @@
 </div>
 
  </td>
+      <td ></td>
+      <td ></td>
       <td ></td>
       <td class="text-center">Total</td>
       <td class="text-end fw-bold"><%= format_curr(@pagamentosf.sum(:valor)) %></td>
