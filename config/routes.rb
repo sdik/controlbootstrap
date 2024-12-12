@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  
+  #namespace :admin do
+   # get 'users/index'
+  #end
+   namespace :admin do
+    resources :users, only: [:index, :destroy] do
+      member do
+        patch :toggle_status
+      end
+    end
+  end
   devise_for :users, controllers: {
       sessions: 'users/sessions',
       passwords: 'users/passwords',
